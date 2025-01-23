@@ -4,6 +4,7 @@
 
 :root {
   --background: #F9F9F9;
+  --surface: #FCFCFC;
   --primary: #607D4A;
   --primary-100: #F1F8E4;
   --primary-200: #E2F2CA;
@@ -12,4 +13,29 @@
 
 [data-theme='dark'] {
     --background: #121212;
+    --surface: #191919;
+}
+
+@layer components {
+  .content-container {
+    @apply bg-surface shadow-md rounded-2xl w-full h-full p-6;
+  }
+}
+
+@layer base {
+  h1 {
+    @apply text-3xl md:text-4xl lg:text-5xl;
+  }
+
+  h2 {
+    @apply text-2xl md:text-3xl xl:text-4xl;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl xl:text-3xl;
+  }
+
+  h4 {
+    @apply text-lg md:text-xl xl:text-2xl;
+  }
 }
