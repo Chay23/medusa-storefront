@@ -4,6 +4,10 @@
 
 :root {
   --background: #F9F9F9;
+  --primary: #607D4A;
+  --primary-100: #F1F8E4;
+  --primary-200: #E2F2CA;
+  --primary-500: #607D4A;
 }
 
 [data-theme='dark'] {

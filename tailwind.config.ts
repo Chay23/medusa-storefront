@@ -13,6 +13,10 @@ export default {
 			colors: {
 				background: 'var(--background)',
 				surface: 'var(--surface)',
+				primary: 'var(--primary)',
+				'primary-100': 'var(--primary-100)',
+				'primary-200': 'var(--primary-200)'
+
 			},
 		},
 	},
@@ -22,7 +26,7 @@ export default {
 				light: {
 					colors: {
 						primary: {
-							DEFAULT: '#607D4A',
+							DEFAULT: 'var(--primary)',
 						},
 					},
 				},
@@ -30,7 +34,7 @@ export default {
 					colors: {
 						primary: {
 							foreground: '#FFFFFF',
-							DEFAULT: '#607D4A',
+							DEFAULT: 'var(--primary)',
 						},
 					},
 				},
