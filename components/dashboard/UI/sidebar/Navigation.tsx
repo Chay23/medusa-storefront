@@ -6,6 +6,7 @@ import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import FeaturedPlayListIcon from '@mui/icons-material/FeaturedPlayList';
 import { Divider } from '@heroui/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -25,6 +26,12 @@ const sidebarItems: (
 		key: '/dashboard/products',
 		label: 'Products',
 		icon: <Inventory2OutlinedIcon />,
+	},
+	{
+		type: 'item',
+		key: '/dashboard/collections',
+		label: 'Collections',
+		icon: <FeaturedPlayListIcon />,
 	},
 	{
 		type: 'item',

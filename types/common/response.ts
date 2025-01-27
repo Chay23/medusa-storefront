@@ -1,5 +1,7 @@
-export type PaginatedResponse<T> = {
-    limit: number;
-    offset: number;
-    count: number;
-} & T;
+export type PaginationFields = {
+	limit: number;
+	offset: number;
+	count: number;
+};
+
+export type PaginatedResponse<T> = PaginationFields & T;

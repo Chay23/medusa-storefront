@@ -13,41 +13,48 @@ import ResultsCount from '../UI/table/ResultsCount';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 type Props = {
-	productsRes: Api.ProductsResponse;
+	collectionsRes: Api.AdminCollectionListResponse;
 };
 
-export default function ProductsTable({ productsRes }: Props) {
-	const { products, offset, limit, count } = productsRes;
+export default function CollectionsTable({ collectionsRes }: Props) {
+	const { offset, limit, count, collections } = collectionsRes;
 
 	return (
 		<div>
-			<Table selectionMode='multiple' aria-label='Products table'>
+			<Table aria-label='Collections table'>
 				<TableHeader>
 					<TableColumn>Name</TableColumn>
+					<TableColumn>Handle</TableColumn>
 					<TableColumn>Created</TableColumn>
-					<TableColumn>Collection</TableColumn>
-					<TableColumn>Status</TableColumn>
+					<TableColumn>Updated</TableColumn>
 					<TableColumn>
 						<></>
 					</TableColumn>
 				</TableHeader>
 				<TableBody>
-					{products.map((product) => {
-						const created = product.created_at
-							? new Date(product.created_at).toLocaleDateString('en-US', {
+					{collections.map((collection) => {
+						const created = collection.created_at
+							? new Date(collection.created_at).toLocaleDateString('en-US', {
 									day: '2-digit',
 									month: '2-digit',
 									year: 'numeric',
 							  })
 							: '-';
-						const collection = product.collection?.title ?? '-';
+
+						const updated = collection.updated_at
+							? new Date(collection.updated_at).toLocaleDateString('en-US', {
+									day: '2-digit',
+									month: '2-digit',
+									year: 'numeric',
+							  })
+							: '-';
 
 						return (
-							<TableRow key={product.id}>
-								<TableCell>{product.title}</TableCell>
+							<TableRow key={collection.id}>
+								<TableCell>{collection.title}</TableCell>
+								<TableCell>{collection.handle}</TableCell>
 								<TableCell>{created}</TableCell>
-								<TableCell>{collection}</TableCell>
-								<TableCell className='capitalize'>{product.status}</TableCell>
+								<TableCell>{updated}</TableCell>
 								<TableCell>
 									<button>
 										<MoreHorizIcon />
