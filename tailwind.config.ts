@@ -13,6 +13,7 @@ export default {
 			colors: {
 				background: 'var(--background)',
 				surface: 'var(--surface)',
+				loading: 'var(--loading)',
 				primary: 'var(--primary)',
 				'primary-100': 'var(--primary-100)',
 				'primary-200': 'var(--primary-200)'
