@@ -5,3 +5,8 @@ export type PaginationFields = {
 };
 
 export type PaginatedResponse<T> = PaginationFields & T;
+
+export type ErrorResponse = {
+	type: string;
+	message: string; 
+};

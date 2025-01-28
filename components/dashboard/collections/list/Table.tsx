@@ -8,7 +8,7 @@ import {
 	TableHeader,
 	TableRow,
 } from '@heroui/react';
-import ResultsCount from '../UI/table/ResultsCount';
+import ResultsCount from '../../UI/table/ResultsCount';
 
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
@@ -23,7 +23,7 @@ export default function CollectionsTable({ collectionsRes }: Props) {
 		<div>
 			<Table aria-label='Collections table'>
 				<TableHeader>
-					<TableColumn>Name</TableColumn>
+					<TableColumn>Title</TableColumn>
 					<TableColumn>Handle</TableColumn>
 					<TableColumn>Created</TableColumn>
 					<TableColumn>Updated</TableColumn>

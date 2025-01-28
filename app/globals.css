@@ -3,41 +3,42 @@
 @tailwind utilities;
 
 :root {
-  --background: #F9F9F9;
-  --surface: #FCFCFC;
-  --loading: #cacaca;
-  --primary: #607D4A;
-  --primary-100: #F1F8E4;
-  --primary-200: #E2F2CA;
-  --primary-500: #607D4A;
+	--background: #f9f9f9;
+	--surface: #fcfcfc;
+	--loading: #cacaca;
+	--primary: #607d4a;
+	--text-secondary: #747474;
+	--primary-100: #f1f8e4;
+	--primary-200: #e2f2ca;
+	--primary-500: #607d4a;
 }
 
 [data-theme='dark'] {
-    --background: #121212;
-    --surface: #191919;
-    --loading: #555555;
+	--background: #121212;
+	--surface: #191919;
+	--loading: #555555;
 }
 
 @layer components {
-  .content-container {
-    @apply bg-surface shadow-md rounded-2xl w-full h-full p-6;
-  }
+	.content-container {
+		@apply bg-surface shadow-md rounded-2xl w-full h-full p-6;
+	}
 }
 
 @layer base {
-  h1 {
-    @apply text-3xl md:text-4xl lg:text-5xl;
-  }
+	h1 {
+		@apply text-3xl md:text-4xl lg:text-5xl;
+	}
 
-  h2 {
-    @apply text-2xl md:text-3xl xl:text-4xl;
-  }
+	h2 {
+		@apply text-2xl md:text-3xl xl:text-4xl;
+	}
 
-  h3 {
-    @apply text-xl md:text-2xl xl:text-3xl;
-  }
+	h3 {
+		@apply text-xl md:text-2xl xl:text-3xl;
+	}
 
-  h4 {
-    @apply text-lg md:text-xl xl:text-2xl;
-  }
+	h4 {
+		@apply text-lg md:text-xl xl:text-2xl;
+	}
 }

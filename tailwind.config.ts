@@ -15,6 +15,7 @@ export default {
 				surface: 'var(--surface)',
 				loading: 'var(--loading)',
 				primary: 'var(--primary)',
+				'text-secondary': 'var(--text-secondary)',
 				'primary-100': 'var(--primary-100)',
 				'primary-200': 'var(--primary-200)'
 

@@ -1,4 +1,4 @@
-import Collections from '@/components/dashboard/collections/Collections';
+import Collections from '@/components/dashboard/collections/list/Collections';
 import { getCollections } from '@/lib/dashboard/data/collections';
 
 export default async function Page() {
