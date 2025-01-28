@@ -1,7 +1,7 @@
 'use server';
 
 import type { Api } from '@/types/api';
-import type { ActionState } from '@/types/errors/actions';
+import type { ActionState } from '@/types/api/errors/actions';
 
 import { getAuthHeader } from './cookies';
 import { getAdminURL } from '@/utils/env';
