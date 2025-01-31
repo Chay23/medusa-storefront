@@ -10,7 +10,7 @@ export default function Breadcrumbs({ items }: Props) {
 	return (
 		<HeroBreadcrumbs className='my-3'>
 			{items.map((item) => (
-				<BreadcrumbItem>
+				<BreadcrumbItem key={item.href}>
 					<Link href={item.href}>{item.title}</Link>
 				</BreadcrumbItem>
 			))}
