@@ -9,9 +9,14 @@ import { signIn } from '@/lib/dashboard/data/user';
 
 import VisibilityOutIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOffOutlined';
+import { useSearchParams } from 'next/navigation';
 
 export default function SignIn() {
 	const [isVisible, setVisible] = useState(false);
+	const searchParams = useSearchParams();
+	const from = searchParams.get('from');
+
+	const _signIn = signIn.bind(null, from);
 
 	const toggleVisibility = () => {
 		setVisible((prevState) => !prevState);
@@ -20,7 +25,7 @@ export default function SignIn() {
 	return (
 		<div className='flex flex-col items-center w-[300px] gap-6'>
 			<h2 className='text-2xl'>Welcome to Dashboard</h2>
-			<Form className='items-center gap-7 w-full' action={signIn}>
+			<Form className='items-center gap-7 w-full' action={_signIn}>
 				<Input
 					name='email'
 					type='email'
@@ -44,7 +49,9 @@ export default function SignIn() {
 						</button>
 					}
 				/>
-				<Button color="primary" type='submit'>Sign In</Button>
+				<Button color='primary' type='submit'>
+					Sign In
+				</Button>
 			</Form>
 			<div>
 				Forgot Password - <Link href=''>Reset</Link>
