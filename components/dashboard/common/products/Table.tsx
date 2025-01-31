@@ -8,9 +8,10 @@ import {
 	TableHeader,
 	TableRow,
 } from '@heroui/react';
-import ResultsCount from '../UI/table/ResultsCount';
+import ResultsCount from '../../UI/table/ResultsCount';
 
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import Filters from './Filters';
 
 type Props = {
 	productsRes: Api.ProductsResponse;
@@ -21,6 +22,7 @@ export default function ProductsTable({ productsRes }: Props) {
 
 	return (
 		<div>
+			<Filters />
 			<Table selectionMode='multiple' aria-label='Products table'>
 				<TableHeader>
 					<TableColumn>Name</TableColumn>

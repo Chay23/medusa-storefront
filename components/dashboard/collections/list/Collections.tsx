@@ -16,7 +16,6 @@ const breadcrumbs: Breadcrumb[] = [
 	{
 		title: 'Collections',
 		href: '/dashboard/collections',
-		active: true
 	},
 ];
 

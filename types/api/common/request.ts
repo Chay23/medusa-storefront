@@ -7,3 +7,7 @@ export type FindParams = {
 export type SearchParams = {
     q?: string;
 };
+
+export type ProductsParams = {
+    collection_id?: string
+}

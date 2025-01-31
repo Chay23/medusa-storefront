@@ -3,8 +3,8 @@
 import type { Api } from '@/types/api';
 
 import { Button } from '@heroui/react';
-import Filters from './Filters';
-import ProductsTable from './Table';
+import SectionHeader from '../UI/common/SectionHeader';
+import ProductsTable from '../common/products/Table';
 
 type Props = {
 	productsRes: Api.ProductsResponse;
@@ -13,13 +13,14 @@ type Props = {
 export default function Products({ productsRes }: Props) {
 	return (
 		<section className='content-container'>
-			<div className='flex justify-between mb-7'>
-				<h2>Products</h2>
-				<div>
-					<Button color='primary'>Add Product</Button>
-				</div>
-			</div>
-			<Filters />
+			<SectionHeader
+				title='Products'
+				endContent={
+					<div>
+						<Button color='primary'>Add Product</Button>
+					</div>
+				}
+			/>
 			<ProductsTable productsRes={productsRes} />
 		</section>
 	);

@@ -5,7 +5,6 @@ import type { ActionState } from '@/types/api/errors/actions';
 
 import { getAuthHeader } from './cookies';
 import { getAdminURL } from '@/utils/env';
-import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
 export const getCollections = async (
@@ -33,6 +32,23 @@ export const getCollections = async (
 	const collections = await res.json();
 
 	return collections;
+};
+
+export const getCollection = async (
+	id: string
+): Promise<Api.AdminCollectionResponse> => {
+	const adminURL = getAdminURL();
+
+	const headers = {
+		...(await getAuthHeader()),
+	};
+
+	const res = await fetch(`${adminURL}/admin/collections/${id}`, {
+		headers,
+	});
+	const collection = await res.json();
+
+	return collection;
 };
 
 export const createCollection = async (
@@ -77,7 +93,6 @@ export const createCollection = async (
 			errors: {},
 			toast: { message: 'Collection successfully created' },
 		};
-		// redirect('/dashboard/collections');
 	}
 
 	const json = await res.json();

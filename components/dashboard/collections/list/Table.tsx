@@ -9,6 +9,7 @@ import {
 	TableRow,
 } from '@heroui/react';
 import ResultsCount from '../../UI/table/ResultsCount';
+import Link from 'next/link';
 
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
@@ -25,7 +26,7 @@ export default function CollectionsTable({ collectionsRes }: Props) {
 				<TableHeader>
 					<TableColumn>Title</TableColumn>
 					<TableColumn>Handle</TableColumn>
-					<TableColumn>Created</TableColumn>
+					<TableColumn>Products</TableColumn>
 					<TableColumn>Updated</TableColumn>
 					<TableColumn>
 						<></>
@@ -33,14 +34,7 @@ export default function CollectionsTable({ collectionsRes }: Props) {
 				</TableHeader>
 				<TableBody>
 					{collections.map((collection) => {
-						const created = collection.created_at
-							? new Date(collection.created_at).toLocaleDateString('en-US', {
-									day: '2-digit',
-									month: '2-digit',
-									year: 'numeric',
-							  })
-							: '-';
-
+						const productsAmount = collection.products?.length;
 						const updated = collection.updated_at
 							? new Date(collection.updated_at).toLocaleDateString('en-US', {
 									day: '2-digit',
@@ -50,10 +44,17 @@ export default function CollectionsTable({ collectionsRes }: Props) {
 							: '-';
 
 						return (
-							<TableRow key={collection.id}>
+							<TableRow
+								key={collection.id}
+								as={Link}
+								href={`/dashboard/collections/${collection.id}`}
+								className='cursor-pointer transition-background duration-300 hover:bg-background'
+							>
 								<TableCell>{collection.title}</TableCell>
 								<TableCell>{collection.handle}</TableCell>
-								<TableCell>{created}</TableCell>
+								<TableCell>
+									{collection.products ? productsAmount : '-'}
+								</TableCell>
 								<TableCell>{updated}</TableCell>
 								<TableCell>
 									<button>
