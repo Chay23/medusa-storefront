@@ -2,15 +2,18 @@
 
 import type { Api } from '@/types/api';
 import type { ActionState } from '@/types/api/errors/actions';
+import type { RetrieveResponse } from '@/types/common/fetch';
 
 import { getAuthHeader } from './cookies';
 import { getAdminURL } from '@/utils/env';
 import { z } from 'zod';
+import { errorObject_1 } from '../common/error/constants';
+import { getRetrieveError } from '../common/error/utils';
 
 export const getCollections = async (
 	pageParam = 1,
 	queryParams: Api.FindParams & Api.SearchParams
-): Promise<Api.AdminCollectionListResponse> => {
+): Promise<RetrieveResponse<Api.AdminCollectionListResponse>> => {
 	const limit = queryParams?.limit || 12;
 	const _pageParam = Math.max(pageParam, 1);
 	const offset = (_pageParam - 1) * limit;
@@ -26,29 +29,61 @@ export const getCollections = async (
 		offset: offset.toString(),
 	}).toString();
 
-	const res = await fetch(`${adminURL}/admin/collections?${_queryParams}`, {
-		headers,
-	});
-	const collections = await res.json();
+	const url = `${adminURL}/admin/collections?${_queryParams}`;
 
-	return collections;
+	try {
+		const res = await fetch(url, {
+			headers,
+		});
+
+		if (!res.ok) {
+			throw new Error(getRetrieveError(url));
+		}
+
+		const collections = await res.json();
+
+		return {
+			success: true,
+			error: null,
+			data: collections as Api.AdminCollectionListResponse,
+		};
+	} catch (e) {
+		console.error(e);
+
+		return {
+			success: false,
+			error: errorObject_1,
+			data: null,
+		};
+	}
 };
 
 export const getCollection = async (
 	id: string
-): Promise<Api.AdminCollectionResponse> => {
+): Promise<RetrieveResponse<Api.AdminCollectionResponse>> => {
 	const adminURL = getAdminURL();
+	const url = `${adminURL}/admin/collections/${id}`;
 
 	const headers = {
 		...(await getAuthHeader()),
 	};
 
-	const res = await fetch(`${adminURL}/admin/collections/${id}`, {
-		headers,
-	});
-	const collection = await res.json();
+	try {
+		const res = await fetch(url, {
+			headers,
+		});
 
-	return collection;
+		if (!res.ok) {
+			throw new Error(getRetrieveError(url));
+		}
+
+		const collection = await res.json();
+
+		return { success: true, error: null, data: collection };
+	} catch (e) {
+		console.error(e);
+		return { success: false, error: errorObject_1, data: null };
+	}
 };
 
 export const createCollection = async (
