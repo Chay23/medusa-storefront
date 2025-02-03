@@ -61,6 +61,13 @@ const sidebarItems: (
 	},
 ];
 
+const isActive = (link: string, currPath: string) => {
+	if (link === '/dashboard') {
+		return link === currPath;
+	}
+	return currPath.startsWith(link);
+};
+
 export default function Navigation({}) {
 	const pathname = usePathname();
 
@@ -74,7 +81,7 @@ export default function Navigation({}) {
 						key={item.key}
 						href={item.key}
 						className={`flex gap-5 items-center p-2 rounded-lg transition-all ease-in-out duration-300 hover:bg-primary-100 hover:text-primary ${
-							pathname === item.key ? 'bg-primary-100 text-primary' : ''
+							isActive(item.key, pathname) ? 'bg-primary-100 text-primary' : ''
 						}`}
 					>
 						<div>{item.icon}</div>
