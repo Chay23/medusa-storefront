@@ -28,7 +28,6 @@ export default function Collections({ collectionsRes }: Props) {
 					<h2>Collections</h2>
 					<Button
 						as={Link}
-						role='link'
 						href='/dashboard/collections/create'
 						color='primary'
 					>

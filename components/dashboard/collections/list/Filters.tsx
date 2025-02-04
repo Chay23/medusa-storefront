@@ -3,7 +3,7 @@ import SearchIcon from '@mui/icons-material/Search';
 
 export default function CollectionsFilters({}) {
 	return (
-		<div className='flex gap-4 justify-between items-center mb-4'>
+		<div className='flex gap-4 justify-between items-center mb-6'>
 			<div className='flex gap-3'>
 				<Select label='Filter' className='min-w-[200px]' size='sm'>
 					<SelectItem>Item</SelectItem>

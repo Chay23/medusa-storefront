@@ -1,6 +1,7 @@
 import type { Api } from '@/types/api';
 
 import {
+	Pagination,
 	Table,
 	TableBody,
 	TableCell,
@@ -12,6 +13,7 @@ import ResultsCount from '../../UI/table/ResultsCount';
 import Link from 'next/link';
 
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 type Props = {
 	collectionsRes: Api.AdminCollectionListResponse;
@@ -19,10 +21,18 @@ type Props = {
 
 export default function CollectionsTable({ collectionsRes }: Props) {
 	const { offset, limit, count, collections } = collectionsRes;
+	const searchParams = useSearchParams();
+
+	const page = parseInt(searchParams.get('page') || '1');
+	const router = useRouter();
+
+	const handlePageChange = (page: number) => {
+		router.replace(`/dashboard/collections?page=${page}`);
+	};
 
 	return (
 		<div>
-			<Table aria-label='Collections table'>
+			<Table aria-label='Collections table' removeWrapper>
 				<TableHeader>
 					<TableColumn>Title</TableColumn>
 					<TableColumn>Handle</TableColumn>
@@ -48,7 +58,7 @@ export default function CollectionsTable({ collectionsRes }: Props) {
 								key={collection.id}
 								as={Link}
 								href={`/dashboard/collections/${collection.id}`}
-								className='cursor-pointer transition-background duration-300 hover:bg-background'
+								className='cursor-pointer transition-background duration-300 hover:bg-background border-b border-foreground-100'
 							>
 								<TableCell>{collection.title}</TableCell>
 								<TableCell>{collection.handle}</TableCell>
@@ -66,12 +76,15 @@ export default function CollectionsTable({ collectionsRes }: Props) {
 					})}
 				</TableBody>
 			</Table>
-			<ResultsCount
-				limit={limit}
-				offset={offset}
-				count={count}
-				classNames='mt-3'
-			/>
+			<div className='flex justify-between mt-6'>
+				<ResultsCount limit={limit} offset={offset} count={count} />
+				<Pagination
+					showControls
+					page={page}
+					total={Math.ceil(count / limit)}
+					onChange={handlePageChange}
+				/>
+			</div>
 		</div>
 	);
 }
