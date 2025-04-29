@@ -42,7 +42,7 @@ export default function CollectionsTable({ collectionsRes }: Props) {
 						<></>
 					</TableColumn>
 				</TableHeader>
-				<TableBody>
+				<TableBody emptyContent="No Results Found">
 					{collections.map((collection) => {
 						const productsAmount = collection.products?.length;
 						const updated = collection.updated_at

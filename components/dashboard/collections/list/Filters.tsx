@@ -1,22 +1,26 @@
-import { Input, Select, SelectItem } from '@heroui/react';
-import SearchIcon from '@mui/icons-material/Search';
+import { DAY_OPTIONS_1 } from '@/utils/constants';
+import DateFilter from '../../common/filters/DateFilter';
+import SearchFilter from '../../common/filters/SearchFilter';
+
+import { Filter } from 'lucide-react';
 
 export default function CollectionsFilters({}) {
 	return (
 		<div className='flex gap-4 justify-between items-center mb-6'>
-			<div className='flex gap-3'>
-				<Select label='Filter' className='min-w-[200px]' size='sm'>
-					<SelectItem>Item</SelectItem>
-				</Select>
-				<Select label='Filter' className='min-w-[200px]' size='sm'>
-					<SelectItem>Item</SelectItem>
-				</Select>
+			<div className='flex gap-3 items-center'>
+				<Filter />
+				<DateFilter
+					title='Created'
+					paramName='created_at'
+					dayOptions={DAY_OPTIONS_1}
+				/>
+				<DateFilter
+					title='Updated'
+					paramName='updated_at'
+					dayOptions={DAY_OPTIONS_1}
+				/>
 			</div>
-			<Input
-				startContent={<SearchIcon />}
-				className='border rounded-xl w-fit'
-				placeholder='Search'
-			/>
+			<SearchFilter placeholder='Search' />
 		</div>
 	);
 }
