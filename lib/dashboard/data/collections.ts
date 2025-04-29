@@ -27,6 +27,7 @@ export const getCollections = async (
 		...queryParams,
 		limit: limit.toString(),
 		offset: offset.toString(),
+		order: '-created_at'
 	}).toString();
 
 	const url = `${adminURL}/admin/collections?${_queryParams}`;
