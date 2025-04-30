@@ -3,6 +3,8 @@ import type { ChangeEvent } from 'react';
 import { getLocalTimeZone, parseDate, today } from '@internationalized/date';
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useUpdateParams } from '@/hooks/useUpdateParams';
+import { formatDate } from '@/lib/dashboard/filters/utils';
 import {
 	Button,
 	cn,
@@ -30,6 +32,7 @@ export default function DateFilter({ title, paramName, dayOptions }: Props) {
 	const searchParams = useSearchParams();
 	const [option, setOption] = useState('');
 	const [showCustomOption, setShowCustomOption] = useState(false);
+	const { updateParams } = useUpdateParams();
 
 	const defaultOptions = useMemo(
 		() => [
@@ -67,33 +70,20 @@ export default function DateFilter({ title, paramName, dayOptions }: Props) {
 		}
 	}, []);
 
-	const formatDate = (dateStr: string) => {
-		const date = parseDate(dateStr);
-		const jsDate = date.toDate(getLocalTimeZone());
-		const month = new Intl.DateTimeFormat('en-US', { month: 'short' }).format(
-			jsDate
-		);
-		return `${month} ${date.day}, ${date.year}`;
-	};
-
 	const getDateRange = () => {
 		const dateFrom = searchParams.get(`${paramName}[$gte]`);
 		const dateTo = searchParams.get(`${paramName}[$lte]`);
 
 		if (dateTo && dateFrom) {
-			const dateFromStr = formatDate(dateFrom);
-			const dateToStr = formatDate(dateTo);
-			return `${dateFromStr} - ${dateToStr}`;
+			return `${formatDate(dateFrom)} - ${formatDate(dateTo)}`;
 		}
 
 		if (dateFrom) {
-			const dateFromStr = formatDate(dateFrom);
-			return dateFromStr;
+			return formatDate(dateFrom);
 		}
 
 		if (dateTo) {
-			const dateToStr = formatDate(dateTo);
-			return dateToStr;
+			return formatDate(dateTo);
 		}
 	};
 
@@ -102,33 +92,31 @@ export default function DateFilter({ title, paramName, dayOptions }: Props) {
 		return date ? parseDate(date) : null;
 	};
 
-	const handleCreatedToDateChange = (date: DateValue | null) => {
-		if (date) {
-			const params = new URLSearchParams(searchParams);
-			params.set(`${paramName}[$lte]`, `${date}`);
-			router.replace(`?${params}`);
-		}
+	const clearParams = () => {
+		updateParams({
+			[`${paramName}[$gte]`]: null,
+			[`${paramName}[$lte]`]: null,
+		});
 	};
 
-	const handleCreatedFromDateChange = (date: DateValue | null) => {
-		if (date) {
-			const params = new URLSearchParams(searchParams);
-			params.set(`${paramName}[$gte]`, `${date}`);
-			router.replace(`?${params}`);
-		}
+	const handleDateChange = (filterOption: string) => {
+		return (date: DateValue | null) => {
+			if (date) {
+				const params = new URLSearchParams(searchParams);
+				params.set(`${paramName}${filterOption}`, `${date}`);
+				router.replace(`?${params}`);
+			}
+		};
 	};
 
 	const handleOptionChange = (e: ChangeEvent<HTMLSelectElement>) => {
 		const value = e.target.value;
-		const params = new URLSearchParams(searchParams);
 
 		if (value) {
 			setOption(value);
 
 			if (value === 'custom') {
-				params.delete(`${paramName}[$gte]`);
-				params.delete(`${paramName}[$lte]`);
-				router.replace(`?${params}`);
+				clearParams();
 				return setShowCustomOption(true);
 			}
 
@@ -138,23 +126,19 @@ export default function DateFilter({ title, paramName, dayOptions }: Props) {
 				days: parseInt(value),
 			});
 
-			params.delete(`${paramName}[$lte]`);
-			params.set(`${paramName}[$gte]`, `${date}`);
-			return router.replace(`?${params}`);
+			return updateParams({
+				[`${paramName}[$gte]`]: date.toString(),
+				[`${paramName}[$lte]`]: null,
+			});
 		}
 
-		params.delete(`${paramName}[$gte]`);
-		params.delete(`${paramName}[$lte]`);
-		router.replace(`?${params}`);
+		clearParams();
 	};
 
-	const handleParamsClear = () => {
-		const params = new URLSearchParams(searchParams);
-		params.delete(`${paramName}[$gte]`);
-		params.delete(`${paramName}[$lte]`);
+	const handleRemoveFilter = () => {
+		clearParams();
 		setShowCustomOption(false);
 		setOption('');
-		router.replace(`?${params}`);
 	};
 
 	return (
@@ -210,7 +194,7 @@ export default function DateFilter({ title, paramName, dayOptions }: Props) {
 								label='From'
 								labelPlacement='outside'
 								value={getDate(`${paramName}[$gte]`)}
-								onChange={handleCreatedFromDateChange}
+								onChange={handleDateChange('[$gte]')}
 							/>
 						</DropdownItem>
 						<DropdownItem
@@ -222,7 +206,7 @@ export default function DateFilter({ title, paramName, dayOptions }: Props) {
 								label='To'
 								labelPlacement='outside'
 								value={getDate(`${paramName}[$lte]`)}
-								onChange={handleCreatedToDateChange}
+								onChange={handleDateChange('[$lte]')}
 							/>
 						</DropdownItem>
 					</DropdownSection>
@@ -230,7 +214,7 @@ export default function DateFilter({ title, paramName, dayOptions }: Props) {
 			</Dropdown>
 			{option && (
 				<Button
-					onPress={handleParamsClear}
+					onPress={handleRemoveFilter}
 					isIconOnly
 					className={cn('min-w-5 w-5 min-h-5 h-5 rounded-full')}
 				>

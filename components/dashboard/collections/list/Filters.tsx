@@ -1,6 +1,6 @@
-import { DAY_OPTIONS_1 } from '@/utils/constants';
 import DateFilter from '../../common/filters/DateFilter';
 import SearchFilter from '../../common/filters/SearchFilter';
+import { DAY_OPTIONS_1 } from '@/lib/dashboard/constants/index';
 
 import { Filter } from 'lucide-react';
 
