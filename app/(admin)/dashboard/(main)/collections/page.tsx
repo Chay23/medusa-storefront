@@ -10,6 +10,7 @@ export default async function Page({ searchParams }: Props) {
 	const {
 		page,
 		q,
+		order,
 		'created_at[$gte]': createdGte,
 		'created_at[$lte]': createdLte,
 		'updated_at[$gte]': updatedGte,
@@ -20,6 +21,7 @@ export default async function Page({ searchParams }: Props) {
 
 	const collectionsRes = await getCollections(_page, {
 		q: q || '',
+		...(order && { order }),
 		...(createdGte && { 'created_at[$gte]': createdGte }),
 		...(createdLte && { 'created_at[$lte]': createdLte }),
 		...(updatedGte && { 'created_at[$gte]': updatedGte }),

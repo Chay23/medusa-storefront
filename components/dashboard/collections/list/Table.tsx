@@ -2,6 +2,7 @@ import type { Api } from '@/types/api';
 
 import {
 	Pagination,
+	SortDescriptor,
 	Table,
 	TableBody,
 	TableCell,
@@ -14,45 +15,73 @@ import Link from 'next/link';
 
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { formatDate } from '@/lib/dashboard/list/utils';
+import { useUpdateParams } from '@/hooks/useUpdateParams';
 
 type Props = {
 	collectionsRes: Api.AdminCollectionListResponse;
 };
 
 export default function CollectionsTable({ collectionsRes }: Props) {
-	const { offset, limit, count, collections } = collectionsRes;
 	const searchParams = useSearchParams();
 
+	const getSortOrder = () => {
+		const order = searchParams.get('order');
+		if (order) {
+			return order.match(/^-/) ? 'descending' : 'ascending';
+		}
+		return 'descending'; // default order is descending by 'created_at'
+	};
+
+	const { updateParams } = useUpdateParams();
+	const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
+		column: '',
+		direction: getSortOrder(),
+	});
+
+	const { offset, limit, count, collections } = collectionsRes;
 	const page = parseInt(searchParams.get('page') || '1');
-	const router = useRouter();
 
 	const handlePageChange = (page: number) => {
-		router.replace(`/dashboard/collections?page=${page}`);
+		updateParams({ page: page.toString() });
+	};
+
+	const handleSort = (sortOption: SortDescriptor) => {
+		setSortDescriptor(() => sortOption);
+
+		if (sortOption.direction === 'descending') {
+			return updateParams({ order: `-${sortOption.column}` });
+		}
+
+		updateParams({ order: `${sortOption.column}` });
 	};
 
 	return (
 		<div>
-			<Table aria-label='Collections table' removeWrapper>
+			<Table
+				aria-label='Collections table'
+				removeWrapper
+				sortDescriptor={sortDescriptor}
+				onSortChange={handleSort}
+			>
 				<TableHeader>
 					<TableColumn>Title</TableColumn>
 					<TableColumn>Handle</TableColumn>
 					<TableColumn>Products</TableColumn>
-					<TableColumn>Updated</TableColumn>
+					<TableColumn allowsSorting key='created_at'>
+						Created
+					</TableColumn>
+					<TableColumn allowsSorting key='updated_at'>
+						Updated
+					</TableColumn>
 					<TableColumn>
 						<></>
 					</TableColumn>
 				</TableHeader>
-				<TableBody emptyContent="No Results Found">
+				<TableBody emptyContent='No Results Found'>
 					{collections.map((collection) => {
 						const productsAmount = collection.products?.length;
-						const updated = collection.updated_at
-							? new Date(collection.updated_at).toLocaleDateString('en-US', {
-									day: '2-digit',
-									month: '2-digit',
-									year: 'numeric',
-							  })
-							: '-';
-
 						return (
 							<TableRow
 								key={collection.id}
@@ -65,7 +94,8 @@ export default function CollectionsTable({ collectionsRes }: Props) {
 								<TableCell>
 									{collection.products ? productsAmount : '-'}
 								</TableCell>
-								<TableCell>{updated}</TableCell>
+								<TableCell>{formatDate(collection.created_at)}</TableCell>
+								<TableCell>{formatDate(collection.updated_at)}</TableCell>
 								<TableCell>
 									<button>
 										<MoreHorizIcon />
