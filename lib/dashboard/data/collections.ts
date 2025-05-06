@@ -9,6 +9,7 @@ import { getAdminURL } from '@/utils/env';
 import { z } from 'zod';
 import { errorObject_1 } from '../common/error/constants';
 import { getRetrieveError } from '../common/error/utils';
+import { revalidatePath } from 'next/cache';
 
 export const getCollections = async (
 	pageParam = 1,
@@ -128,6 +129,46 @@ export const createCollection = async (
 			success: true,
 			errors: {},
 			toast: { message: 'Collection successfully created' },
+		};
+	}
+
+	const json = await res.json();
+
+	return {
+		success: false,
+		errors: {},
+		toast: { message: json.message },
+	};
+};
+
+export const updateCollection = async (
+	{ id }: { id: string },
+	_: any,
+	formData: FormData
+): Promise<ActionState> => {
+	const adminURL = getAdminURL();
+	const rawFormData = {
+		title: formData.get('title'),
+		handle: formData.get('handle'),
+	};
+
+	const headers = {
+		'Content-Type': 'application/json',
+		...(await getAuthHeader()),
+	};
+
+	const res = await fetch(`${adminURL}/admin/collections/${id}`, {
+		method: 'POST',
+		headers,
+		body: JSON.stringify(rawFormData),
+	});
+
+	if (res.ok) {
+		revalidatePath(`/dashboard/collections/${id}`)
+		return {
+			success: true,
+			errors: {},
+			toast: { message: 'Collection successfully edited' },
 		};
 	}
 

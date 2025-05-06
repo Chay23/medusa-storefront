@@ -4,13 +4,20 @@ import type { AdminCollection } from '@/types/api/collections';
 import type { ProductsResponse } from '@/types/api/products';
 import type { Breadcrumb } from '@/types/common/breadcrumbs';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 import SectionHeader from '../../UI/common/SectionHeader';
 import ProductsTable from '../../common/products/Table';
 import Breadcrumbs from '../../UI/breadcrumbs/Breadcrumbs';
 
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import {
+	Dropdown,
+	DropdownItem,
+	DropdownMenu,
+	DropdownTrigger,
+} from '@heroui/react';
+import EditCollection from './EditCollection';
 
 type Props = {
 	collection: AdminCollection;
@@ -18,6 +25,8 @@ type Props = {
 };
 
 export default function Collection({ collection, productsRes }: Props) {
+	const [openDrawer, setOpenDrawer] = useState(false);
+
 	const breadcrumbs: Breadcrumb[] = useMemo(
 		() => [
 			{
@@ -29,19 +38,38 @@ export default function Collection({ collection, productsRes }: Props) {
 				href: `/dashboard/collections/${collection.id}`,
 			},
 		],
-		[]
+		[collection.title]
 	);
+
+	const handleToggleEditDrawer = () => {
+		return setOpenDrawer((prevState) => !prevState);
+	};
+
 	return (
 		<>
-			<Breadcrumbs items={breadcrumbs}/>
+			<Breadcrumbs items={breadcrumbs} />
+			<EditCollection
+				collection={collection}
+				openDrawer={openDrawer}
+				onToggleDrawer={handleToggleEditDrawer}
+			/>
 			<div className='flex flex-col gap-9'>
 				<section className='content-container'>
 					<SectionHeader
 						title={collection.title}
 						endContent={
-							<div className='self-center cursor-pointer'>
-								<MoreHorizIcon />
-							</div>
+							<Dropdown>
+								<DropdownTrigger>
+									<div className='self-center cursor-pointer'>
+										<MoreHorizIcon />
+									</div>
+								</DropdownTrigger>
+								<DropdownMenu aria-label='Collection actions'>
+									<DropdownItem key='edit' onPress={handleToggleEditDrawer}>
+										Edit
+									</DropdownItem>
+								</DropdownMenu>
+							</Dropdown>
 						}
 					/>
 					<div className='grid grid-cols-2'>
