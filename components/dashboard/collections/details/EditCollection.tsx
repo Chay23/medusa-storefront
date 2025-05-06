@@ -33,16 +33,15 @@ export default function EditCollection({
 	openDrawer,
 	onToggleDrawer,
 }: Props) {
-	const _updateCollection = useMemo(
+	const boundUpdateCollection = useMemo(
 		() => updateCollection.bind(null, { id: collection.id }),
 		[collection.id]
 	);
 
 	const [actionState, formAction, isPending] = useActionState(
-		_updateCollection,
+		boundUpdateCollection,
 		{
 			success: false,
-			errors: {},
 			toast: null,
 		}
 	);
@@ -59,16 +58,17 @@ export default function EditCollection({
 	});
 
 	useEffect(() => {
-		if (actionState.toast) {
-			toast[`${actionState.success ? 'success' : 'error'}`](
-				actionState.toast.message,
-				{
-					id: 'collection-edit',
-				}
-			);
-
-			onToggleDrawer();
+		if (!actionState.toast) {
+			return;
 		}
+		toast[`${actionState.success ? 'success' : 'error'}`](
+			actionState.toast.message,
+			{
+				id: 'collection-edit',
+			}
+		);
+
+		onToggleDrawer();
 	}, [actionState]);
 
 	const handleDrawerClose = () => {

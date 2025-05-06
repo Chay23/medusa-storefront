@@ -1,7 +1,10 @@
 'use server';
 
 import type { Api } from '@/types/api';
-import type { ActionState } from '@/types/api/errors/actions';
+import type {
+	ActionState,
+	ActionStateWithValidation,
+} from '@/types/api/actions/common';
 import type { RetrieveResponse } from '@/types/common/fetch';
 
 import { getAuthHeader } from './cookies';
@@ -91,7 +94,7 @@ export const getCollection = async (
 export const createCollection = async (
 	prevState: ActionState,
 	formData: FormData
-): Promise<ActionState> => {
+): Promise<ActionStateWithValidation> => {
 	const adminURL = getAdminURL();
 	const rawFormData = {
 		title: formData.get('title'),
@@ -157,26 +160,26 @@ export const updateCollection = async (
 		...(await getAuthHeader()),
 	};
 
-	const res = await fetch(`${adminURL}/admin/collections/${id}`, {
-		method: 'POST',
-		headers,
-		body: JSON.stringify(rawFormData),
-	});
+	try {
+		const res = await fetch(`${adminURL}/admin/collections/${id}`, {
+			method: 'POST',
+			headers,
+			body: JSON.stringify(rawFormData),
+		});
 
-	if (res.ok) {
-		revalidatePath(`/dashboard/collections/${id}`)
+		if (!res.ok) {
+			throw new Error();
+		}
+
+		revalidatePath(`/dashboard/collections/${id}`);
 		return {
 			success: true,
-			errors: {},
 			toast: { message: 'Collection successfully edited' },
 		};
+	} catch (_) {
+		return {
+			success: false,
+			toast: { message: 'Failed to edit product' },
+		};
 	}
-
-	const json = await res.json();
-
-	return {
-		success: false,
-		errors: {},
-		toast: { message: json.message },
-	};
 };
