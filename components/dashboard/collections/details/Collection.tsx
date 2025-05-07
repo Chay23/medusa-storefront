@@ -18,6 +18,7 @@ import {
 	DropdownTrigger,
 } from '@heroui/react';
 import EditCollection from './EditCollection';
+import { useSearchParams } from 'next/navigation';
 
 type Props = {
 	collection: AdminCollection;
@@ -25,7 +26,9 @@ type Props = {
 };
 
 export default function Collection({ collection, productsRes }: Props) {
-	const [openDrawer, setOpenDrawer] = useState(false);
+	const searchParams = useSearchParams();
+	const showDrawer = searchParams.get('edit') === 'true' ? true : false;
+	const [openDrawer, setOpenDrawer] = useState(showDrawer || false);
 
 	const breadcrumbs: Breadcrumb[] = useMemo(
 		() => [

@@ -12,10 +12,11 @@ import {
 	Form,
 	Input,
 } from '@heroui/react';
-import { useActionState, useCallback, useEffect, useMemo } from 'react';
+import { useActionState, useEffect, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { updateCollection } from '@/lib/dashboard/data/collections';
+import { useShallowUpdateParams } from '@/hooks/useShallowUpdateParams';
 
 type Props = {
 	collection: AdminCollection;
@@ -33,6 +34,7 @@ export default function EditCollection({
 	openDrawer,
 	onToggleDrawer,
 }: Props) {
+	const { shallowUpdateParams } = useShallowUpdateParams();
 	const boundUpdateCollection = useMemo(
 		() => updateCollection.bind(null, { id: collection.id }),
 		[collection.id]
@@ -74,6 +76,7 @@ export default function EditCollection({
 	const handleDrawerClose = () => {
 		onToggleDrawer();
 		reset();
+		shallowUpdateParams({ edit: null });
 	};
 
 	return (

@@ -1,6 +1,10 @@
 import type { Api } from '@/types/api';
 
 import {
+	Dropdown,
+	DropdownItem,
+	DropdownMenu,
+	DropdownTrigger,
 	Pagination,
 	SortDescriptor,
 	Table,
@@ -97,9 +101,21 @@ export default function CollectionsTable({ collectionsRes }: Props) {
 								<TableCell>{formatDate(collection.created_at)}</TableCell>
 								<TableCell>{formatDate(collection.updated_at)}</TableCell>
 								<TableCell>
-									<button>
-										<MoreHorizIcon />
-									</button>
+									<Dropdown>
+										<DropdownTrigger>
+											<div className='self-center cursor-pointer'>
+												<MoreHorizIcon />
+											</div>
+										</DropdownTrigger>
+										<DropdownMenu aria-label='Collection actions'>
+											<DropdownItem
+												key='edit'
+												href={`/dashboard/collections/${collection.id}?edit=true`}
+											>
+												Edit
+											</DropdownItem>
+										</DropdownMenu>
+									</Dropdown>
 								</TableCell>
 							</TableRow>
 						);
