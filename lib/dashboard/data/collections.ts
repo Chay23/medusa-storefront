@@ -179,7 +179,47 @@ export const updateCollection = async (
 	} catch (_) {
 		return {
 			success: false,
-			toast: { message: 'Failed to edit product' },
+			toast: { message: 'Failed to edit collection' },
+		};
+	}
+};
+
+export const deleteCollection = async ({
+	id,
+	revalidateList,
+}: {
+	id: string;
+	revalidateList?: boolean;
+}): Promise<ActionState> => {
+	const adminURL = getAdminURL();
+
+	const headers = {
+		'Content-Type': 'application/json',
+		...(await getAuthHeader()),
+	};
+
+	try {
+		const res = await fetch(`${adminURL}/admin/collections/${id}`, {
+			method: 'DELETE',
+			headers,
+		});
+
+		if (!res.ok) {
+			throw new Error();
+		}
+
+		if (revalidateList) {
+			revalidatePath('/dashboard/collections');
+		}
+
+		return {
+			success: true,
+			toast: { message: 'Collection successfully deleted' },
+		};
+	} catch (_) {
+		return {
+			success: false,
+			toast: { message: 'Failed to delete collection' },
 		};
 	}
 };

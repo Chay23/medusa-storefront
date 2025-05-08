@@ -33,10 +33,12 @@ export default function CollectionCreate() {
 
 	useEffect(() => {
 		if (actionState.toast) {
-			toast(actionState.toast.message, {
-				type: actionState.success ? 'success' : 'error',
-				id: 'collection-create',
-			});
+			toast[`${actionState.success ? 'success' : 'error'}`](
+				actionState.toast.message,
+				{
+					id: 'collection-create',
+				}
+			);
 		}
 
 		if (actionState.success) {
