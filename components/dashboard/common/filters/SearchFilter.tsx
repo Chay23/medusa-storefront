@@ -1,0 +1,38 @@
+import { useState, type ChangeEvent } from 'react';
+
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useDebouncedCallback } from 'use-debounce';
+import { Input } from '@heroui/react';
+
+import SearchIcon from '@mui/icons-material/Search';
+
+type Props = {
+	placeholder: string;
+};
+
+export default function SearchFilter({ placeholder = '' }: Props) {
+	const router = useRouter();
+	const searchParams = useSearchParams();
+	const [searchValue, setSearchValue] = useState(searchParams.get('q') || '');
+
+	const handleSearchChange = (value: string) => {
+		setSearchValue(() => value);
+		handleParamChange(value);
+	};
+
+	const handleParamChange = useDebouncedCallback((value: string) => {
+		const params = new URLSearchParams(searchParams);
+		value ? params.set('q', value) : params.delete('q');
+		router.replace(`?${params}`);
+	}, 200);
+
+	return (
+		<Input
+			startContent={<SearchIcon />}
+			className='border rounded-xl w-fit'
+			placeholder={placeholder}
+			value={searchValue}
+			onValueChange={handleSearchChange}
+		/>
+	);
+}
