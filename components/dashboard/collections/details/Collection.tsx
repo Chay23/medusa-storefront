@@ -5,20 +5,21 @@ import type { ProductsResponse } from '@/types/api/products';
 import type { Breadcrumb } from '@/types/common/breadcrumbs';
 
 import { useMemo, useState } from 'react';
-
+import { useSearchParams } from 'next/navigation';
+ 
 import SectionHeader from '../../UI/common/SectionHeader';
 import ProductsTable from '../../common/products/Table';
 import Breadcrumbs from '../../UI/breadcrumbs/Breadcrumbs';
-
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import {
 	Dropdown,
 	DropdownItem,
 	DropdownMenu,
 	DropdownTrigger,
+	useDisclosure,
 } from '@heroui/react';
 import EditCollection from './EditCollection';
-import { useSearchParams } from 'next/navigation';
+import DeleteCollectionModal from '../delete/DeleteCollectionModal';
 
 type Props = {
 	collection: AdminCollection;
@@ -28,8 +29,12 @@ type Props = {
 export default function Collection({ collection, productsRes }: Props) {
 	const searchParams = useSearchParams();
 	const showDrawer = searchParams.get('edit') === 'true' ? true : false;
-	const [openDrawer, setOpenDrawer] = useState(showDrawer || false);
-
+	const [isOpenDrawer, setIsOpenDrawer] = useState(showDrawer || false);
+	const {
+		isOpen: isOpenDeleteModal,
+		onOpen: onOpenDeleteModal,
+		onClose: onCloseDeleteModal,
+	} = useDisclosure();
 	const breadcrumbs: Breadcrumb[] = useMemo(
 		() => [
 			{
@@ -45,15 +50,20 @@ export default function Collection({ collection, productsRes }: Props) {
 	);
 
 	const handleToggleEditDrawer = () => {
-		return setOpenDrawer((prevState) => !prevState);
+		return setIsOpenDrawer((prevState) => !prevState);
 	};
 
 	return (
 		<>
+			<DeleteCollectionModal
+				openModal={isOpenDeleteModal}
+				onModalClose={onCloseDeleteModal}
+				collection={collection}
+			/>
 			<Breadcrumbs items={breadcrumbs} />
 			<EditCollection
 				collection={collection}
-				openDrawer={openDrawer}
+				openDrawer={isOpenDrawer}
 				onToggleDrawer={handleToggleEditDrawer}
 			/>
 			<div className='flex flex-col gap-9'>
@@ -70,6 +80,9 @@ export default function Collection({ collection, productsRes }: Props) {
 								<DropdownMenu aria-label='Collection actions'>
 									<DropdownItem key='edit' onPress={handleToggleEditDrawer}>
 										Edit
+									</DropdownItem>
+									<DropdownItem key='delete' onPress={onOpenDeleteModal}>
+										Delete
 									</DropdownItem>
 								</DropdownMenu>
 							</Dropdown>

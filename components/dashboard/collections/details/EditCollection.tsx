@@ -60,17 +60,18 @@ export default function EditCollection({
 	});
 
 	useEffect(() => {
-		if (!actionState.toast) {
-			return;
+		if (actionState.toast) {
+			toast[`${actionState.success ? 'success' : 'error'}`](
+				actionState.toast.message,
+				{
+					id: 'collection-edit',
+				}
+			);
 		}
-		toast[`${actionState.success ? 'success' : 'error'}`](
-			actionState.toast.message,
-			{
-				id: 'collection-edit',
-			}
-		);
 
-		onToggleDrawer();
+		if (actionState.success) {
+			onToggleDrawer();
+		}
 	}, [actionState]);
 
 	const handleDrawerClose = () => {
