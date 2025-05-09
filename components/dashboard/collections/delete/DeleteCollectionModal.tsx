@@ -62,7 +62,7 @@ export default function DeleteCollectionModal({
 	}, [actionState]);
 
 	return (
-		<Modal isOpen={openModal} onOpenChange={onModalClose}>
+		<Modal isOpen={openModal} onClose={onModalClose}>
 			<ModalContent>
 				<ModalHeader>Delete collection</ModalHeader>
 				<ModalBody>
