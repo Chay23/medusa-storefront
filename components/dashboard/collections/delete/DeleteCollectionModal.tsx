@@ -33,7 +33,6 @@ export default function DeleteCollectionModal({
 		() =>
 			deleteCollection.bind(null, {
 				id: collection.id,
-				revalidateList,
 			}),
 		[collection.id]
 	);
@@ -58,7 +57,7 @@ export default function DeleteCollectionModal({
 
 		if (actionState.success) {
 			onModalClose();
-			!revalidateList && router.push('/dashboard/collections');
+			revalidateList ? router.refresh() : router.push('/dashboard/collections');
 		}
 	}, [actionState]);
 

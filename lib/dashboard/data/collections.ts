@@ -186,10 +186,8 @@ export const updateCollection = async (
 
 export const deleteCollection = async ({
 	id,
-	revalidateList,
 }: {
 	id: string;
-	revalidateList?: boolean;
 }): Promise<ActionState> => {
 	const adminURL = getAdminURL();
 
@@ -206,10 +204,6 @@ export const deleteCollection = async ({
 
 		if (!res.ok) {
 			throw new Error();
-		}
-
-		if (revalidateList) {
-			revalidatePath('/dashboard/collections');
 		}
 
 		return {
