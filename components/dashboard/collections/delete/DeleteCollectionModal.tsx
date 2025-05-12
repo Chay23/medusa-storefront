@@ -1,9 +1,9 @@
 import type { AdminCollection } from '@/types/api/collections';
 
-import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { useActionState, useEffect, useMemo } from 'react';
 import { deleteCollection } from '@/lib/dashboard/data/collections';
+import { showActionToast } from '@/lib/dashboard/utils';
 
 import {
 	Button,
@@ -46,14 +46,7 @@ export default function DeleteCollectionModal({
 	);
 
 	useEffect(() => {
-		if (actionState.toast) {
-			toast[`${actionState.success ? 'success' : 'error'}`](
-				actionState.toast.message,
-				{
-					id: 'collection-delete',
-				}
-			);
-		}
+		showActionToast('collection-delete', actionState);
 
 		if (actionState.success) {
 			onModalClose();

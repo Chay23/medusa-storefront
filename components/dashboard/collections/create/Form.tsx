@@ -1,14 +1,16 @@
 'use client';
 
+import type { Breadcrumb } from '@/types/common/breadcrumbs';
+
 import { createCollection } from '@/lib/dashboard/data/collections';
+import { useActionState, useEffect } from 'react';
+import { redirect } from 'next/navigation';
+import { showActionToast } from '@/lib/dashboard/utils';
+
 import { Button, Input } from '@heroui/react';
 import { Form } from '@heroui/form';
-import { useActionState, useEffect } from 'react';
-import { toast } from 'react-hot-toast';
 
-import { redirect } from 'next/navigation';
 import Breadcrumbs from '../../UI/breadcrumbs/Breadcrumbs';
-import { Breadcrumb } from '@/types/common/breadcrumbs';
 
 const breadcrumbs: Breadcrumb[] = [
 	{
@@ -32,14 +34,7 @@ export default function CollectionCreate() {
 	);
 
 	useEffect(() => {
-		if (actionState.toast) {
-			toast[`${actionState.success ? 'success' : 'error'}`](
-				actionState.toast.message,
-				{
-					id: 'collection-create',
-				}
-			);
-		}
+		showActionToast('collection-create', actionState);
 
 		if (actionState.success) {
 			redirect('/dashboard/collections');
