@@ -6,7 +6,8 @@ import type { Breadcrumb } from '@/types/common/breadcrumbs';
 
 import { useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
- 
+import { useModals } from '@/store/dashboard/modals';
+
 import SectionHeader from '../../UI/common/SectionHeader';
 import ProductsTable from '../../common/products/Table';
 import Breadcrumbs from '../../UI/breadcrumbs/Breadcrumbs';
@@ -16,10 +17,11 @@ import {
 	DropdownItem,
 	DropdownMenu,
 	DropdownTrigger,
-	useDisclosure,
 } from '@heroui/react';
 import EditCollection from './EditCollection';
 import DeleteCollectionModal from '../delete/DeleteCollectionModal';
+
+import { ID_COLLECTION_DELETE } from '@/lib/dashboard/contants';
 
 type Props = {
 	collection: AdminCollection;
@@ -30,11 +32,8 @@ export default function Collection({ collection, productsRes }: Props) {
 	const searchParams = useSearchParams();
 	const showDrawer = searchParams.get('edit') === 'true' ? true : false;
 	const [isOpenDrawer, setIsOpenDrawer] = useState(showDrawer || false);
-	const {
-		isOpen: isOpenDeleteModal,
-		onOpen: onOpenDeleteModal,
-		onClose: onCloseDeleteModal,
-	} = useDisclosure();
+	const onDeleteModalOpen = useModals((state) => state.openModal);
+
 	const breadcrumbs: Breadcrumb[] = useMemo(
 		() => [
 			{
@@ -55,11 +54,7 @@ export default function Collection({ collection, productsRes }: Props) {
 
 	return (
 		<>
-			<DeleteCollectionModal
-				openModal={isOpenDeleteModal}
-				onModalClose={onCloseDeleteModal}
-				collection={collection}
-			/>
+			<DeleteCollectionModal collection={collection} />
 			<Breadcrumbs items={breadcrumbs} />
 			<EditCollection
 				collection={collection}
@@ -81,7 +76,10 @@ export default function Collection({ collection, productsRes }: Props) {
 									<DropdownItem key='edit' onPress={handleToggleEditDrawer}>
 										Edit
 									</DropdownItem>
-									<DropdownItem key='delete' onPress={onOpenDeleteModal}>
+									<DropdownItem
+										key='delete'
+										onPress={() => onDeleteModalOpen(ID_COLLECTION_DELETE)}
+									>
 										Delete
 									</DropdownItem>
 								</DropdownMenu>
