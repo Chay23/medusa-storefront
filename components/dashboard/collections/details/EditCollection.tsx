@@ -14,9 +14,9 @@ import {
 } from '@heroui/react';
 import { useActionState, useEffect, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import { updateCollection } from '@/lib/dashboard/data/collections';
 import { useShallowUpdateParams } from '@/hooks/useShallowUpdateParams';
+import { showActionToast } from '@/lib/dashboard/utils';
 
 type Props = {
 	collection: AdminCollection;
@@ -60,17 +60,11 @@ export default function EditCollection({
 	});
 
 	useEffect(() => {
-		if (!actionState.toast) {
-			return;
-		}
-		toast[`${actionState.success ? 'success' : 'error'}`](
-			actionState.toast.message,
-			{
-				id: 'collection-edit',
-			}
-		);
+		showActionToast('collection-edit', actionState);
 
-		onToggleDrawer();
+		if (actionState.success) {
+			onToggleDrawer();
+		}
 	}, [actionState]);
 
 	const handleDrawerClose = () => {

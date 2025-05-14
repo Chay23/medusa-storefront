@@ -1,4 +1,7 @@
+'use client';
+
 import type { Api } from '@/types/api';
+import type { AdminCollection } from '@/types/api/collections';
 
 import {
 	Dropdown,
@@ -16,18 +19,22 @@ import {
 } from '@heroui/react';
 import ResultsCount from '../../UI/table/ResultsCount';
 import Link from 'next/link';
-
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import { useSearchParams, useRouter } from 'next/navigation';
+
+import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { formatDate } from '@/lib/dashboard/list/utils';
 import { useUpdateParams } from '@/hooks/useUpdateParams';
 
 type Props = {
 	collectionsRes: Api.AdminCollectionListResponse;
+	onDeleteModalOpen: (collection: AdminCollection) => void;
 };
 
-export default function CollectionsTable({ collectionsRes }: Props) {
+export default function CollectionsTable({
+	collectionsRes,
+	onDeleteModalOpen,
+}: Props) {
 	const searchParams = useSearchParams();
 
 	const getSortOrder = () => {
@@ -62,7 +69,7 @@ export default function CollectionsTable({ collectionsRes }: Props) {
 	};
 
 	return (
-		<div>
+		<>
 			<Table
 				aria-label='Collections table'
 				removeWrapper
@@ -114,6 +121,12 @@ export default function CollectionsTable({ collectionsRes }: Props) {
 											>
 												Edit
 											</DropdownItem>
+											<DropdownItem
+												key='delete'
+												onPress={() => onDeleteModalOpen(collection)}
+											>
+												Delete
+											</DropdownItem>
 										</DropdownMenu>
 									</Dropdown>
 								</TableCell>
@@ -131,6 +144,6 @@ export default function CollectionsTable({ collectionsRes }: Props) {
 					onChange={handlePageChange}
 				/>
 			</div>
-		</div>
+		</>
 	);
 }

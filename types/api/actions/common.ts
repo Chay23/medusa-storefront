@@ -1,5 +1,5 @@
 export type ActionState = {
-	success: Boolean;
+	success: boolean;
 	toast: { message: string } | null;
 };
 
