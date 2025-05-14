@@ -22,6 +22,7 @@ import EditCollection from './EditCollection';
 import DeleteCollectionModal from '../delete/DeleteCollectionModal';
 
 import { ID_COLLECTION_DELETE } from '@/lib/dashboard/contants';
+import { paths } from '@/config/paths';
 
 type Props = {
 	collection: AdminCollection;
@@ -38,11 +39,11 @@ export default function Collection({ collection, productsRes }: Props) {
 		() => [
 			{
 				title: 'Collections',
-				href: '/dashboard/collections',
+				href: paths.dashboard.collections.getHref(),
 			},
 			{
 				title: collection.title,
-				href: `/dashboard/collections/${collection.id}`,
+				href: paths.dashboard.collection.getHref(collection.id),
 			},
 		],
 		[collection.title]

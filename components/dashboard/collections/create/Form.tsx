@@ -9,17 +9,18 @@ import { showActionToast } from '@/lib/dashboard/utils';
 
 import { Button, Input } from '@heroui/react';
 import { Form } from '@heroui/form';
-
 import Breadcrumbs from '../../UI/breadcrumbs/Breadcrumbs';
+
+import { paths } from '@/config/paths';
 
 const breadcrumbs: Breadcrumb[] = [
 	{
 		title: 'Collections',
-		href: '/dashboard/collections',
+		href: paths.dashboard.collections.getHref(),
 	},
 	{
 		title: 'Create',
-		href: '/dashboard/collections/create',
+		href: paths.dashboard.createCollection.getHref(),
 	},
 ];
 
@@ -37,7 +38,7 @@ export default function CollectionCreate() {
 		showActionToast('collection-create', actionState);
 
 		if (actionState.success) {
-			redirect('/dashboard/collections');
+			redirect(paths.dashboard.collections.getHref());
 		}
 	}, [isPending]);
 

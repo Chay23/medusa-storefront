@@ -17,6 +17,7 @@ import {
 import Modal from '../../common/modal/Modal';
 
 import { ID_COLLECTION_DELETE } from '@/lib/dashboard/contants';
+import { paths } from '@/config/paths';
 
 type Props = {
 	collection: AdminCollection;
@@ -50,7 +51,7 @@ export default function DeleteCollectionModal({
 
 		if (actionState.success) {
 			onClose(ID_COLLECTION_DELETE);
-			revalidateList ? router.refresh() : router.push('/dashboard/collections');
+			revalidateList ? router.refresh() : router.push(paths.dashboard.collections.getHref());
 		}
 	}, [actionState]);
 

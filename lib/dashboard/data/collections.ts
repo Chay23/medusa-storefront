@@ -13,6 +13,7 @@ import { z } from 'zod';
 import { errorObject_1 } from '../common/error/constants';
 import { getRetrieveError } from '../common/error/utils';
 import { revalidatePath } from 'next/cache';
+import { paths } from '@/config/paths';
 
 export const getCollections = async (
 	pageParam = 1,
@@ -171,7 +172,7 @@ export const updateCollection = async (
 			throw new Error();
 		}
 
-		revalidatePath(`/dashboard/collections/${id}`);
+		revalidatePath(paths.dashboard.collection.getHref(id));
 		return {
 			success: true,
 			toast: { message: 'Collection successfully edited' },
