@@ -14,6 +14,7 @@ import Breadcrumbs from '../../UI/breadcrumbs/Breadcrumbs';
 import DeleteCollectionModal from '../delete/DeleteCollectionModal';
 
 import { ID_COLLECTION_DELETE } from '@/lib/dashboard/contants';
+import { paths } from '@/config/paths';
 
 type Props = {
 	collectionsRes: Api.AdminCollectionListResponse;
@@ -22,7 +23,7 @@ type Props = {
 const breadcrumbs: Breadcrumb[] = [
 	{
 		title: 'Collections',
-		href: '/dashboard/collections',
+		href: paths.dashboard.collections.getHref(),
 	},
 ];
 
@@ -47,7 +48,7 @@ export default function Collections({ collectionsRes }: Props) {
 					<h2>Collections</h2>
 					<Button
 						as={Link}
-						href='/dashboard/collections/create'
+						href={paths.dashboard.createCollection.getHref()}
 						color='primary'
 					>
 						Create Collection

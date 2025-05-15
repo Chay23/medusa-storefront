@@ -25,6 +25,7 @@ import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { formatDate } from '@/lib/dashboard/list/utils';
 import { useUpdateParams } from '@/hooks/useUpdateParams';
+import { paths } from '@/config/paths';
 
 type Props = {
 	collectionsRes: Api.AdminCollectionListResponse;
@@ -97,7 +98,7 @@ export default function CollectionsTable({
 							<TableRow
 								key={collection.id}
 								as={Link}
-								href={`/dashboard/collections/${collection.id}`}
+								href={paths.dashboard.collection.getHref(collection.id)}
 								className='cursor-pointer transition-background duration-300 hover:bg-background border-b border-foreground-100'
 							>
 								<TableCell>{collection.title}</TableCell>
@@ -117,7 +118,9 @@ export default function CollectionsTable({
 										<DropdownMenu aria-label='Collection actions'>
 											<DropdownItem
 												key='edit'
-												href={`/dashboard/collections/${collection.id}?edit=true`}
+												href={`${paths.dashboard.collection.getHref(
+													collection.id
+												)}?edit=true`}
 											>
 												Edit
 											</DropdownItem>

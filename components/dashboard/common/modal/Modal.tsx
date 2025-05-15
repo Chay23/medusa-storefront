@@ -8,19 +8,19 @@ type Props = {
 	children: ReactNode;
 };
 export default function Modal({ id, children }: Props) {
-	const modals = useModals((state) => state.modals);
+	const modal = useModals((state) => state.modals[id]);
 	const onClose = useModals((state) => state.closeModal);
 
 	const handleModalClose = (id: string) => {
 		return () => onClose(id);
 	};
 
-	if (!modals[id]) {
+	if (!modal) {
 		return null;
 	}
 
 	return (
-		<ModalWrapper isOpen={modals[id].isOpen} onClose={handleModalClose(id)}>
+		<ModalWrapper isOpen={modal.isOpen} onClose={handleModalClose(id)}>
 			{children}
 		</ModalWrapper>
 	);

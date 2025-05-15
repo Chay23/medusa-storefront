@@ -4,9 +4,10 @@ import type { AdminCollection } from '@/types/api/collections';
 import type { ProductsResponse } from '@/types/api/products';
 import type { Breadcrumb } from '@/types/common/breadcrumbs';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useModals } from '@/store/dashboard/modals';
+import { useDrawers } from '@/store/dashboard/drawers';
 
 import SectionHeader from '../../UI/common/SectionHeader';
 import ProductsTable from '../../common/products/Table';
@@ -18,10 +19,14 @@ import {
 	DropdownMenu,
 	DropdownTrigger,
 } from '@heroui/react';
-import EditCollection from './EditCollection';
+import EditCollectionDrawer from './EditCollectionDrawer';
 import DeleteCollectionModal from '../delete/DeleteCollectionModal';
 
-import { ID_COLLECTION_DELETE } from '@/lib/dashboard/contants';
+import {
+	ID_COLLECTION_DELETE,
+	ID_COLLECTION_EDIT,
+} from '@/lib/dashboard/contants';
+import { paths } from '@/config/paths';
 
 type Props = {
 	collection: AdminCollection;
@@ -31,36 +36,34 @@ type Props = {
 export default function Collection({ collection, productsRes }: Props) {
 	const searchParams = useSearchParams();
 	const showDrawer = searchParams.get('edit') === 'true' ? true : false;
-	const [isOpenDrawer, setIsOpenDrawer] = useState(showDrawer || false);
 	const onDeleteModalOpen = useModals((state) => state.openModal);
+	const onEditDrawerOpen = useDrawers((state) => state.openDrawer);
 
 	const breadcrumbs: Breadcrumb[] = useMemo(
 		() => [
 			{
 				title: 'Collections',
-				href: '/dashboard/collections',
+				href: paths.dashboard.collections.getHref(),
 			},
 			{
 				title: collection.title,
-				href: `/dashboard/collections/${collection.id}`,
+				href: paths.dashboard.collection.getHref(collection.id),
 			},
 		],
 		[collection.title]
 	);
 
-	const handleToggleEditDrawer = () => {
-		return setIsOpenDrawer((prevState) => !prevState);
-	};
+	useEffect(() => {
+		if (showDrawer) {
+			onEditDrawerOpen(ID_COLLECTION_EDIT);
+		}
+	}, []);
 
 	return (
 		<>
 			<DeleteCollectionModal collection={collection} />
+			<EditCollectionDrawer collection={collection} />
 			<Breadcrumbs items={breadcrumbs} />
-			<EditCollection
-				collection={collection}
-				openDrawer={isOpenDrawer}
-				onToggleDrawer={handleToggleEditDrawer}
-			/>
 			<div className='flex flex-col gap-9'>
 				<section className='content-container'>
 					<SectionHeader
@@ -73,7 +76,10 @@ export default function Collection({ collection, productsRes }: Props) {
 									</div>
 								</DropdownTrigger>
 								<DropdownMenu aria-label='Collection actions'>
-									<DropdownItem key='edit' onPress={handleToggleEditDrawer}>
+									<DropdownItem
+										key='edit'
+										onPress={() => onEditDrawerOpen(ID_COLLECTION_EDIT)}
+									>
 										Edit
 									</DropdownItem>
 									<DropdownItem
