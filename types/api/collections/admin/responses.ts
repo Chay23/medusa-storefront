@@ -1,5 +1,5 @@
 import { PaginatedResponse } from '@/types/api/common';
-import { AdminCollection } from './entitiies';
+import { AdminCollection } from './entities';
 
 export type AdminCollectionListResponse = PaginatedResponse<{
 	collections: AdminCollection[];
