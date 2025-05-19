@@ -1,3 +1,2 @@
-export * from './common';
-export * from './response';
+export * from './responses';
 export * from './admin';

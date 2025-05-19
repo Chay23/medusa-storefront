@@ -1,6 +1,5 @@
 export type RetrieveError = {
 	message: string;
-	description?: string;
 };
 
 export type RetrieveResponse<T> =
