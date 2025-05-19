@@ -21,6 +21,7 @@ import Link from 'next/link';
 import StatusIndicator from '../../UI/common/StatusIndicator';
 import TablePagination from '../../UI/table/TablePagination';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { useCallback } from 'react';
 
 type Props = {
 	categoriesRes: AdminProductCategoryListResponse;
@@ -33,9 +34,9 @@ export default function CategoriesTable({ categoriesRes }: Props) {
 	const { offset, limit, count, product_categories } = categoriesRes;
 	const page = parseInt(searchParams.get('page') || '1');
 
-	const handlePageChange = (page: number) => {
+	const handlePageChange = useCallback((page: number) => {
 		updateParams({ page: page.toString() });
-	};
+	}, []);
 
 	return (
 		<>

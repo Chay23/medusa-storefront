@@ -1,5 +1,6 @@
 import { Pagination } from '@heroui/react';
 import ResultsCount from './ResultsCount';
+import { memo } from 'react';
 
 type Props = {
 	page: number;
@@ -9,7 +10,7 @@ type Props = {
 	onPageChange: (page: number) => void;
 };
 
-export default function TablePagination({
+export default memo(function TablePagination({
 	limit,
 	count,
 	offset,
@@ -27,4 +28,4 @@ export default function TablePagination({
 			/>
 		</div>
 	);
-}
+});
