@@ -3,8 +3,48 @@ import type { RetrieveResponse } from '@/types/common/fetch';
 
 import { getAdminURL } from '@/utils/env';
 import { getAuthHeader } from '../data/cookies';
-import { errorObject_1 } from '../common/error/constants';
-import { getRetrieveError } from '../common/error/utils';
+import { FETCH_ERROR_OBJECT_1 } from '../common/error/constants';
+import ResponseError from '@/lib/errors/ResponseError';
+
+export const handleFetch = async <T>(
+	url: string,
+	args: RequestInit
+): Promise<RetrieveResponse<T>> => {
+	try {
+		const res = await fetch(url, args);
+		const responseData = (await res.json()) as T;
+
+		if (!res.ok) {
+			const error = new ResponseError(
+				(responseData as Api.ErrorResponse).message ||
+					'An unknown error occurred'
+			);
+			throw error;
+		}
+
+		return {
+			success: true,
+			error: null,
+			data: responseData,
+		};
+	} catch (e) {
+		console.error(e);
+
+		if (e instanceof ResponseError) {
+			return {
+				success: false,
+				error: e,
+				data: null,
+			};
+		}
+
+		return {
+			success: false,
+			error: FETCH_ERROR_OBJECT_1,
+			data: null,
+		};
+	}
+};
 
 export const getPaginationOffset = (limitParam: number, pageParam: number) => {
 	const page = Math.max(pageParam, 1);
@@ -37,29 +77,5 @@ export const getPaginatedList = async <
 
 	const url = `${adminURL}${path}?${_queryParams}`;
 
-	try {
-		const res = await fetch(url, {
-			headers,
-		});
-
-		if (!res.ok) {
-			throw new Error(getRetrieveError(url));
-		}
-
-		const list = (await res.json()) as T;
-
-		return {
-			success: true,
-			error: null,
-			data: list,
-		};
-	} catch (e) {
-		console.error(e);
-
-		return {
-			success: false,
-			error: errorObject_1,
-			data: null,
-		};
-	}
+	return await handleFetch<T>(url, { headers });
 };

@@ -10,58 +10,17 @@ import type { RetrieveResponse } from '@/types/common/fetch';
 import { getAuthHeader } from './cookies';
 import { getAdminURL } from '@/utils/env';
 import { z } from 'zod';
-import { errorObject_1 } from '../common/error/constants';
-import { getRetrieveError } from '../common/error/utils';
 import { revalidatePath } from 'next/cache';
 import { paths } from '@/config/paths';
+import { getPaginatedList, handleFetch } from '../services/api';
+import { LIMIT_OPTION } from '../constants';
 
 export const getCollections = async (
-	pageParam = 1,
+	page = 1,
 	queryParams: Api.FindParams & Api.SearchParams
 ): Promise<RetrieveResponse<Api.AdminCollectionListResponse>> => {
-	const limit = queryParams?.limit || 12;
-	const _pageParam = Math.max(pageParam, 1);
-	const offset = (_pageParam - 1) * limit;
-	const adminURL = getAdminURL();
-
-	const headers = {
-		...(await getAuthHeader()),
-	};
-
-	const _queryParams = new URLSearchParams({
-		...queryParams,
-		limit: limit.toString(),
-		offset: offset.toString(),
-		order: queryParams.order ?? '-created_at',
-	}).toString();
-
-	const url = `${adminURL}/admin/collections?${_queryParams}`;
-
-	try {
-		const res = await fetch(url, {
-			headers,
-		});
-
-		if (!res.ok) {
-			throw new Error(getRetrieveError(url));
-		}
-
-		const collections = await res.json();
-
-		return {
-			success: true,
-			error: null,
-			data: collections as Api.AdminCollectionListResponse,
-		};
-	} catch (e) {
-		console.error(e);
-
-		return {
-			success: false,
-			error: errorObject_1,
-			data: null,
-		};
-	}
+	const limit = queryParams?.limit || LIMIT_OPTION;
+	return await getPaginatedList(page, limit, '/admin/collections', queryParams);
 };
 
 export const getCollection = async (
@@ -74,22 +33,7 @@ export const getCollection = async (
 		...(await getAuthHeader()),
 	};
 
-	try {
-		const res = await fetch(url, {
-			headers,
-		});
-
-		if (!res.ok) {
-			throw new Error(getRetrieveError(url));
-		}
-
-		const collection = await res.json();
-
-		return { success: true, error: null, data: collection };
-	} catch (e) {
-		console.error(e);
-		return { success: false, error: errorObject_1, data: null };
-	}
+	return handleFetch(url, { headers });
 };
 
 export const createCollection = async (
