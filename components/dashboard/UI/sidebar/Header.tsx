@@ -1,14 +1,16 @@
 import {
+	Button,
 	Dropdown,
 	DropdownItem,
 	DropdownMenu,
-	DropdownSection,
 	DropdownTrigger,
 	User,
 } from '@heroui/react';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+
+import { signOut } from '@/lib/dashboard/data/user';
 
 export default function Header() {
 	return (
@@ -28,7 +30,11 @@ export default function Header() {
 					<DropdownItem startContent={<SettingsIcon />} key='profile-settings'>
 						Settings
 					</DropdownItem>
-					<DropdownItem startContent={<LogoutIcon />} key='logout'>
+					<DropdownItem
+						startContent={<LogoutIcon />}
+						key='logout'
+						onPress={() => signOut()}
+					>
 						Logout
 					</DropdownItem>
 				</DropdownMenu>

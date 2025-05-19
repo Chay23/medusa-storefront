@@ -13,6 +13,11 @@ export const setAuthToken = async (token: string) => {
 	});
 };
 
+export const removeAuthToken = async () => {
+	const cookiesStore = await cookies();
+	cookiesStore.delete('_admin_jwt');
+};
+
 export const getAuthHeader = async () => {
 	const cookiesStore = await cookies();
 	const token = cookiesStore.get('_admin_jwt')?.value;

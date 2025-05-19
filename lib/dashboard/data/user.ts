@@ -1,7 +1,7 @@
 'use server';
 
 import { redirect } from 'next/navigation';
-import { setAuthToken } from './cookies';
+import { removeAuthToken, setAuthToken } from './cookies';
 import { getAdminURL } from '@/utils/env';
 
 export const signIn = async (from: string | null, formData: FormData) => {
@@ -30,4 +30,9 @@ export const signIn = async (from: string | null, formData: FormData) => {
 		return redirect(from);
 	}
 	redirect('/dashboard');
+};
+
+export const signOut = async () => {
+	await removeAuthToken();
+	redirect('/dashboard/sign-in');
 };
