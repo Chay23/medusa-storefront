@@ -1,3 +1,5 @@
+'use client';
+
 import { Breadcrumb } from '@/types/common/breadcrumbs';
 import { BreadcrumbItem, Breadcrumbs as HeroBreadcrumbs } from '@heroui/react';
 import Link from 'next/link';

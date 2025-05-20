@@ -15,6 +15,9 @@ export const paths = {
 		collection: {
 			getHref: (id: string) => `/dashboard/collections/${id}`,
 		},
+		categories: {
+			getHref: () => '/dashboard/categories',
+		},
 		products: {
 			getHref: () => '/dashboard/products',
 		},

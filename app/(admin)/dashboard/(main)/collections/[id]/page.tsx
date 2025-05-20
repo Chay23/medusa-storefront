@@ -1,6 +1,5 @@
 import Collection from '@/components/dashboard/collections/details/Collection';
 import ErrorComponent from '@/components/dashboard/UI/error/Error';
-import { errorObject_1 } from '@/lib/dashboard/common/error/constants';
 import { getCollection } from '@/lib/dashboard/data/collections';
 import { getProducts } from '@/lib/dashboard/data/products';
 
@@ -27,7 +26,7 @@ export default async function Page({ params }: Props) {
 	]);
 
 	if (!collectionRes.success || !productsRes.success) {
-		return <ErrorComponent error={errorObject_1} />;
+		return <ErrorComponent error={collectionRes.error || productsRes.error} />;
 	}
 
 	return (
