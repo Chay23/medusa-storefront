@@ -7,9 +7,11 @@ type Props = {
 };
 
 export default async function Page({ searchParams }: Props) {
-	const { page } = await searchParams;
+	const { page, q } = await searchParams;
 	const _page = parseInt(page || '1');
-	const categoriesRes = await getCategories(_page);
+	const categoriesRes = await getCategories(_page, {
+		q: q || '',
+	});
 
 	if (!categoriesRes.success) {
 		return <Error error={categoriesRes.error} />;

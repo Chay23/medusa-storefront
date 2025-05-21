@@ -1,11 +1,14 @@
 'use client';
 
 import type { AdminProductCategoryListResponse } from '@/types/api/product-categories';
+
 import Breadcrumbs from '../../UI/breadcrumbs/Breadcrumbs';
 import { Breadcrumb } from '@/types/common/breadcrumbs';
-import { paths } from '@/config/paths';
 import { Button } from '@heroui/react';
 import CategoriesTable from './Table';
+import CategoriesFilters from './Filters';
+
+import { paths } from '@/config/paths';
 
 type Props = {
 	categoriesRes: AdminProductCategoryListResponse;
@@ -27,6 +30,7 @@ export default function Categories({ categoriesRes }: Props) {
 					<h2>Categories</h2>
 					<Button color='primary'>Create Category</Button>
 				</div>
+				<CategoriesFilters />
 				<CategoriesTable categoriesRes={categoriesRes} />
 			</section>
 		</>
