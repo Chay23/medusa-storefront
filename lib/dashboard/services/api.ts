@@ -1,5 +1,6 @@
 import type { Api } from '@/types/api';
 import type { RetrieveResponse } from '@/types/common/fetch';
+import type { PaginationFields } from '@/types/api/common';
 
 import { getAdminURL } from '@/utils/env';
 import { getAuthHeader } from '../data/cookies';
@@ -77,5 +78,44 @@ export const getPaginatedList = async <
 
 	const url = `${adminURL}${path}?${_queryParams}`;
 
+	return await handleFetch<T>(url, { headers });
+};
+
+export const getFullList = async <
+	T,
+	Q extends Api.FindParams & Api.SearchParams = Api.FindParams &
+		Api.SearchParams
+>(
+	path: string,
+	queryParams?: Q
+): Promise<RetrieveResponse<T>> => {
+	const adminURL = getAdminURL();
+	let offset = 0;
+	const limit = 9999;
+
+	const headers = {
+		...(await getAuthHeader()),
+	};
+
+	const _queryParams = new URLSearchParams({
+		...(queryParams && { ...queryParams }),
+		limit: limit.toString(),
+		offset: offset.toString(),
+	});
+
+	let url = `${adminURL}${path}?${_queryParams.toString()}`;
+	let res = await handleFetch<T>(url, { headers });
+
+	if (!res.success) {
+		return res;
+	}
+
+	if ((res.data as PaginationFields).count <= limit) {
+		return res;
+	}
+
+	_queryParams.set('limit', (res.data as PaginationFields).count.toString());
+
+	url = `${adminURL}${path}?${_queryParams.toString()}`;
 	return await handleFetch<T>(url, { headers });
 };
