@@ -47,6 +47,37 @@ export const handleFetch = async <T>(
 	}
 };
 
+export const handleActionFetch = async (
+	url: string,
+	args: RequestInit,
+	successMessage: string
+) => {
+	try {
+		const res = await fetch(url, args);
+
+		if (!res.ok) {
+			const json = await res.json();
+			throw new ResponseError(json.message);
+		}
+
+		return {
+			success: true,
+			toast: { message: successMessage },
+		};
+	} catch (e) {
+		if (e instanceof ResponseError) {
+			return {
+				success: false,
+				toast: { message: e.message },
+			};
+		}
+		return {
+			success: false,
+			toast: { message: 'An unknown error occured' },
+		};
+	}
+};
+
 export const getPaginationOffset = (limitParam: number, pageParam: number) => {
 	const page = Math.max(pageParam, 1);
 	const offset = (page - 1) * limitParam;

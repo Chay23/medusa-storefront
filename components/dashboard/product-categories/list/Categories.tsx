@@ -7,6 +7,7 @@ import { Breadcrumb } from '@/types/common/breadcrumbs';
 import { Button } from '@heroui/react';
 import CategoriesTable from './Table';
 import CategoriesFilters from './Filters';
+import Link from 'next/link';
 
 import { paths } from '@/config/paths';
 
@@ -28,7 +29,13 @@ export default function Categories({ categoriesRes }: Props) {
 			<section className='content-container'>
 				<div className='flex justify-between mb-7'>
 					<h2>Categories</h2>
-					<Button color='primary'>Create Category</Button>
+					<Button
+						color='primary'
+						as={Link}
+						href={paths.dashboard.createCategory.getHref()}
+					>
+						Create Category
+					</Button>
 				</div>
 				<CategoriesFilters />
 				<CategoriesTable categoriesRes={categoriesRes} />
