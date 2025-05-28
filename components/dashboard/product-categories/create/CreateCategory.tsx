@@ -5,7 +5,7 @@ import type { Inputs, WithNewCategory } from './types';
 import type { Api } from '@/types/api';
 
 import { useForm } from 'react-hook-form';
-import { useActionState, useEffect, useState } from 'react';
+import { useActionState, useCallback, useEffect, useState } from 'react';
 import { createCategory } from '@/lib/dashboard/data/categories';
 import { showActionToast } from '@/lib/dashboard/utils';
 import { redirect } from 'next/navigation';
@@ -17,7 +17,12 @@ import NewCategoryRanking from './ranking/NewCategoryRanking';
 
 import { paths } from '@/config/paths';
 import { ID_CATEGORY_CREATE } from '@/lib/dashboard/contants';
-import { DETAILS_SECTION, RANKING_SECTION } from './constants';
+import {
+	DETAILS_SECTION,
+	RANKING_SECTION,
+	statusOptions,
+	visibilityOptions,
+} from './constants';
 
 const breadcrumbs: Breadcrumb[] = [
 	{
@@ -39,7 +44,15 @@ export default function CreateCategory({ categories }: Props) {
 		success: false,
 		toast: null,
 	});
-	const { control, trigger, getValues } = useForm<Inputs>();
+	const { control, trigger, getValues } = useForm<Inputs>({
+		defaultValues: {
+			name: '',
+			handle: '',
+			description: '',
+			is_active: statusOptions[0].key,
+			is_internal: visibilityOptions[0].key,
+		},
+	});
 	const [selectedSection, setSelectedSection] = useState(DETAILS_SECTION);
 	const [items, setItems] = useState<WithNewCategory[]>(categories);
 

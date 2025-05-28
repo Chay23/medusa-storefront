@@ -1,23 +1,7 @@
 import { Button, Input, Select, SelectItem, Textarea } from '@heroui/react';
 import { Control, Controller } from 'react-hook-form';
 import { Inputs } from './types';
-import { RANKING_SECTION } from './constants';
-
-const statusOptions = [
-	{ key: 'active', label: 'Active' },
-	{ key: 'inactive', label: 'Inactive' },
-];
-
-const visibilityOptions = [
-	{
-		key: 'public',
-		label: 'Public',
-	},
-	{
-		key: 'internal',
-		label: 'Internal',
-	},
-];
+import { RANKING_SECTION, statusOptions, visibilityOptions } from './constants';
 
 type Props = {
 	control: Control<Inputs, any, Inputs>;
@@ -95,7 +79,7 @@ export default function CategoryForm({ control, onSectionChange }: Props) {
 								name={name}
 								value={value}
 								onChange={onChange}
-								defaultSelectedKeys={[statusOptions[0].key]}
+								defaultSelectedKeys={[value]}
 								disallowEmptySelection
 							>
 								{statusOptions.map((option) => (
@@ -114,7 +98,7 @@ export default function CategoryForm({ control, onSectionChange }: Props) {
 								name={name}
 								value={value}
 								onChange={onChange}
-								defaultSelectedKeys={[visibilityOptions[0].key]}
+								defaultSelectedKeys={[value]}
 								disallowEmptySelection
 							>
 								{visibilityOptions.map((option) => (

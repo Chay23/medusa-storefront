@@ -1,7 +1,7 @@
 import type { DragEndEvent } from '@dnd-kit/core';
 import type { WithNewCategory } from '../types';
 
-import { Dispatch, SetStateAction, useMemo } from 'react';
+import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
 import { arrayMove } from '@dnd-kit/sortable';
 
 import Sortable from '../../../common/sortable/Sortable';
@@ -24,26 +24,29 @@ export default function NewCategoryRanking({
 		[items]
 	);
 
-	const handleDragEnd = (event: DragEndEvent) => {
-		const { active, over } = event;
+	const handleDragEnd = useCallback(
+		(event: DragEndEvent) => {
+			const { active, over } = event;
 
-		if (!over) {
-			return;
-		}
+			if (!over) {
+				return;
+			}
 
-		if (active.id !== over.id) {
-			setItems((items) => {
-				const oldIndex = items.findIndex((item) => item.id === active.id);
-				const newIndex = items.findIndex((item) => item.id === over.id);
+			if (active.id !== over.id) {
+				setItems((items) => {
+					const oldIndex = items.findIndex((item) => item.id === active.id);
+					const newIndex = items.findIndex((item) => item.id === over.id);
 
-				return arrayMove(items, oldIndex, newIndex);
-			});
-		}
-	};
+					return arrayMove(items, oldIndex, newIndex);
+				});
+			}
+		},
+		[items]
+	);
 
 	return (
 		<>
-			<input hidden name='rank' value={rank} readOnly/>
+			<input hidden name='rank' value={rank} readOnly />
 			<div className='max-w-[720px] grow h-full overflow-auto'>
 				<Sortable
 					items={items}
