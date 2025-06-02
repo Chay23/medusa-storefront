@@ -1,11 +1,15 @@
 'use client';
 
 import type { AdminProductCategoryListResponse } from '@/types/api/product-categories';
+
 import Breadcrumbs from '../../UI/breadcrumbs/Breadcrumbs';
 import { Breadcrumb } from '@/types/common/breadcrumbs';
-import { paths } from '@/config/paths';
 import { Button } from '@heroui/react';
 import CategoriesTable from './Table';
+import CategoriesFilters from './Filters';
+import Link from 'next/link';
+
+import { paths } from '@/config/paths';
 
 type Props = {
 	categoriesRes: AdminProductCategoryListResponse;
@@ -25,8 +29,15 @@ export default function Categories({ categoriesRes }: Props) {
 			<section className='content-container'>
 				<div className='flex justify-between mb-7'>
 					<h2>Categories</h2>
-					<Button color='primary'>Create Category</Button>
+					<Button
+						color='primary'
+						as={Link}
+						href={paths.dashboard.createCategory.getHref()}
+					>
+						Create Category
+					</Button>
 				</div>
+				<CategoriesFilters />
 				<CategoriesTable categoriesRes={categoriesRes} />
 			</section>
 		</>

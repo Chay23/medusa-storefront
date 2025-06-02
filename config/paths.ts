@@ -18,6 +18,9 @@ export const paths = {
 		categories: {
 			getHref: () => '/dashboard/categories',
 		},
+		createCategory: {
+			getHref: () => '/dashboard/categories/create',
+		},
 		products: {
 			getHref: () => '/dashboard/products',
 		},
