@@ -1,45 +1,29 @@
-'use client';
+import type { Api } from '@/types/api';
 
-import type { AdminProductCategoryListResponse } from '@/types/api/product-categories';
-
-import Breadcrumbs from '../../UI/breadcrumbs/Breadcrumbs';
-import { Breadcrumb } from '@/types/common/breadcrumbs';
-import { Button } from '@heroui/react';
 import CategoriesTable from './Table';
 import CategoriesFilters from './Filters';
-import Link from 'next/link';
+import Error from '../../UI/error/Error';
 
-import { paths } from '@/config/paths';
+import { getCategories } from '@/lib/dashboard/data/categories';
 
 type Props = {
-	categoriesRes: AdminProductCategoryListResponse;
+	page: number;
+	searchQueries: Api.AdminProductCategoryListParams;
 };
 
-const breadcrumbs: Breadcrumb[] = [
-	{
-		title: 'Categories',
-		href: paths.dashboard.categories.getHref(),
-	},
-];
+export default async function Categories({ page, searchQueries }: Props) {
+	const { q } = searchQueries;
+	const categoriesRes = await getCategories(page, {
+		q: q || '',
+	});
 
-export default function Categories({ categoriesRes }: Props) {
+	if (!categoriesRes.success) {
+		return <Error error={categoriesRes.error} />;
+	}
 	return (
 		<>
-			<Breadcrumbs items={breadcrumbs} />
-			<section className='content-container'>
-				<div className='flex justify-between mb-7'>
-					<h2>Categories</h2>
-					<Button
-						color='primary'
-						as={Link}
-						href={paths.dashboard.createCategory.getHref()}
-					>
-						Create Category
-					</Button>
-				</div>
-				<CategoriesFilters />
-				<CategoriesTable categoriesRes={categoriesRes} />
-			</section>
+			<CategoriesFilters />
+			<CategoriesTable categoriesRes={categoriesRes.data} />
 		</>
 	);
 }
