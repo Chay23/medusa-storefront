@@ -5,10 +5,15 @@ import { RANKING_SECTION, statusOptions, visibilityOptions } from './constants';
 
 type Props = {
 	control: Control<Inputs, any, Inputs>;
+	isItemsLoading: boolean;
 	onSectionChange: (key: string | number) => Promise<void>;
 };
 
-export default function CategoryForm({ control, onSectionChange }: Props) {
+export default function CategoryForm({
+	control,
+	isItemsLoading,
+	onSectionChange,
+}: Props) {
 	return (
 		<div className='max-w-[720px] grow'>
 			<div className='w-full flex justify-between'>
@@ -111,6 +116,7 @@ export default function CategoryForm({ control, onSectionChange }: Props) {
 				<div className='flex justify-end'>
 					<Button
 						color='primary'
+						isLoading={isItemsLoading}
 						onPress={() => onSectionChange(RANKING_SECTION)}
 					>
 						Continue

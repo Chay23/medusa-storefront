@@ -3,15 +3,17 @@
 import type { Breadcrumb } from '@/types/common/breadcrumbs';
 import type { Inputs, WithNewCategory } from './types';
 import type { Api } from '@/types/api';
+import type { RetrieveResponse } from '@/types/common/fetch';
 
 import { useForm } from 'react-hook-form';
-import { useActionState, useCallback, useEffect, useState } from 'react';
+import { Suspense, useActionState, useEffect, useState } from 'react';
 import { createCategory } from '@/lib/dashboard/data/categories';
 import { showActionToast } from '@/lib/dashboard/utils';
 import { redirect } from 'next/navigation';
 
 import { Form, Tab, Tabs } from '@heroui/react';
 import Breadcrumbs from '../../UI/breadcrumbs/Breadcrumbs';
+import LoadingSpinner from '../../UI/spinner/LoadingSpinner';
 import CategoryForm from './Form';
 import NewCategoryRanking from './ranking/NewCategoryRanking';
 
@@ -36,10 +38,12 @@ const breadcrumbs: Breadcrumb[] = [
 ];
 
 type Props = {
-	categories: Api.AdminProductCategory[];
+	categoriesPromise: Promise<
+		RetrieveResponse<Api.AdminProductCategoryListResponse>
+	>;
 };
 
-export default function CreateCategory({ categories }: Props) {
+export default function CreateCategory({ categoriesPromise }: Props) {
 	const [actionState, formAction, isPending] = useActionState(createCategory, {
 		success: false,
 		toast: null,
@@ -54,7 +58,7 @@ export default function CreateCategory({ categories }: Props) {
 		},
 	});
 	const [selectedSection, setSelectedSection] = useState(DETAILS_SECTION);
-	const [items, setItems] = useState<WithNewCategory[]>(categories);
+	const [items, setItems] = useState<WithNewCategory[]>([]);
 
 	useEffect(() => {
 		showActionToast(ID_CATEGORY_CREATE, actionState);
@@ -66,6 +70,9 @@ export default function CreateCategory({ categories }: Props) {
 
 	const handleSectionChange = async (key: string | number) => {
 		if (await trigger()) {
+			if (isItemsLoading) {
+				return;
+			}
 			setSelectedSection(key as string);
 		}
 
@@ -82,6 +89,8 @@ export default function CreateCategory({ categories }: Props) {
 			setItems(tempArray);
 		}
 	};
+
+	const isItemsLoading = !items.length;
 
 	return (
 		<>
@@ -102,18 +111,28 @@ export default function CreateCategory({ categories }: Props) {
 							<CategoryForm
 								control={control}
 								onSectionChange={handleSectionChange}
+								isItemsLoading={isItemsLoading}
 							/>
 						</Tab>
 						<Tab
 							key={RANKING_SECTION}
-							title='Organize Ranking'
+							title={
+								<div className='flex items-center gap-2'>
+									{isItemsLoading && <LoadingSpinner />}
+									Organize Ranking
+								</div>
+							}
 							className='w-full flex justify-center'
+							isDisabled={isItemsLoading}
 						>
-							<NewCategoryRanking
-								items={items}
-								isPending={isPending}
-								setItems={setItems}
-							/>
+							<Suspense>
+								<NewCategoryRanking
+									items={items}
+									isPending={isPending}
+									setItems={setItems}
+									categoriesPromise={categoriesPromise}
+								/>
+							</Suspense>
 						</Tab>
 					</Tabs>
 				</Form>

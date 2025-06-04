@@ -1,3 +1,5 @@
+'use client';
+
 import SearchFilter from '../../common/filters/SearchFilter';
 
 export default function CategoriesFilters() {

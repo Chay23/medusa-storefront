@@ -1,5 +1,6 @@
-import { useState, type ChangeEvent } from 'react';
+'use client';
 
+import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 import { Input } from '@heroui/react';
