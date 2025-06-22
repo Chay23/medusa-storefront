@@ -34,8 +34,6 @@ export default function SignInForm({ from }: Props) {
 
 	useEffect(() => {
 		if (actionState.toast) {
-			console.log(actionState);
-
 			showActionToast('sign-in', actionState);
 		}
 	}, [actionState]);

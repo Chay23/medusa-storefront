@@ -52,12 +52,8 @@ export const signIn = async (
 		}
 		const { token } = await res.json();
 		await setAuthToken(token);
-
-		if (from) {
-			return redirect(from);
-		}
-		redirect(paths.dashboard.root.getHref());
 	} catch (e) {
+		console.error(e);
 		if (e instanceof ResponseError) {
 			return {
 				success: false,
@@ -71,4 +67,5 @@ export const signIn = async (
 			errors: {},
 		};
 	}
+	redirect(from || paths.dashboard.root.getHref());
 };
