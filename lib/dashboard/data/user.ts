@@ -9,6 +9,11 @@ import { getAdminURL } from '@/utils/env';
 import { z } from 'zod';
 import { paths } from '@/config/paths';
 import ResponseError from '@/lib/errors/ResponseError';
+import {
+	VALIDATION_EMPTY_EMAIL,
+	VALIDATION_EMPTY_PASSWORD,
+	VALIDATION_INVALID_EMAIL,
+} from '../constants/validation';
 
 export const signIn = async (
 	from: string | undefined,
@@ -21,8 +26,11 @@ export const signIn = async (
 	};
 
 	const formSchema = z.object({
-		email: z.string().email('Email address is not valid'),
-		password: z.string().min(1, 'You need to enter a password'),
+		email: z
+			.string()
+			.min(1, VALIDATION_EMPTY_EMAIL)
+			.email(VALIDATION_INVALID_EMAIL),
+		password: z.string().min(1, VALIDATION_EMPTY_PASSWORD),
 	});
 
 	const validation = formSchema.safeParse(rawFormData);

@@ -48,11 +48,7 @@ export default function SignInForm({ from }: Props) {
 			<Controller
 				name='email'
 				control={control}
-				rules={{ required: 'You need to enter an email address' }}
-				render={({
-					fieldState: { error, invalid },
-					field: { name, value, onChange },
-				}) => (
+				render={({ field: { name, value, onChange } }) => (
 					<Input
 						name={name}
 						type='email'
@@ -69,14 +65,10 @@ export default function SignInForm({ from }: Props) {
 			<Controller
 				name='password'
 				control={control}
-				rules={{ required: 'You need to enter a password' }}
-				render={({
-					fieldState: { error, invalid },
-					field: { name, value, onChange },
-				}) => (
+				render={({ field: { name, value, onChange } }) => (
 					<Input
 						name={name}
-						type={'password'}
+						type={isVisible ? 'text' : 'password'}
 						labelPlacement='outside'
 						label='Password'
 						placeholder='Enter your password'
@@ -86,6 +78,7 @@ export default function SignInForm({ from }: Props) {
 						errorMessage={actionState.errors?.password ?? ''}
 						endContent={
 							<button
+								data-testid='toggle-password-visibility'
 								aria-label='toggle password visibility'
 								type='button'
 								onClick={toggleVisibility}
