@@ -19,3 +19,8 @@ export const getAuthHeader = async () => {
 	const token = cookiesStore.get(AUTH_COOKIE_NAME)?.value;
 	return { Authorization: `Bearer ${token}` };
 };
+
+export const deleteAuthToken = async () => {
+	const cookiesStore = await cookies();
+	cookiesStore.delete(AUTH_COOKIE_NAME);
+};
