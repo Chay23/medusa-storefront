@@ -4,7 +4,7 @@ import { getLocalTimeZone, parseDate, today } from '@internationalized/date';
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useUpdateParams } from '@/hooks/useUpdateParams';
-import { formatDate } from '@/lib/dashboard/filters/utils';
+import { formatFiltersDate } from '@/lib/dashboard/utils/date';
 import {
 	Button,
 	cn,
@@ -75,15 +75,15 @@ export default function DateFilter({ title, paramName, dayOptions }: Props) {
 		const dateTo = searchParams.get(`${paramName}[$lte]`);
 
 		if (dateTo && dateFrom) {
-			return `${formatDate(dateFrom)} - ${formatDate(dateTo)}`;
+			return `${formatFiltersDate(dateFrom)} - ${formatFiltersDate(dateTo)}`;
 		}
 
 		if (dateFrom) {
-			return formatDate(dateFrom);
+			return formatFiltersDate(dateFrom);
 		}
 
 		if (dateTo) {
-			return formatDate(dateTo);
+			return formatFiltersDate(dateTo);
 		}
 	};
 

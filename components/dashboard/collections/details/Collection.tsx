@@ -25,7 +25,7 @@ import DeleteCollectionModal from '../delete/DeleteCollectionModal';
 import {
 	ID_COLLECTION_DELETE,
 	ID_COLLECTION_EDIT,
-} from '@/lib/dashboard/contants';
+} from '@/lib/dashboard/constants/componentIds';
 import { paths } from '@/config/paths';
 
 type Props = {

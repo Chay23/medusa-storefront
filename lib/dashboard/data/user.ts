@@ -14,6 +14,10 @@ import {
 	VALIDATION_EMPTY_PASSWORD,
 	VALIDATION_INVALID_EMAIL,
 } from '../constants/validation';
+import {
+	AUTH_TOKEN_LOG_ERROR_MESSAGE,
+	GENERIC_AUTH_ERROR_MESSAGE,
+} from '../constants/errors';
 
 export const signIn = async (
 	from: string | undefined,
@@ -59,6 +63,11 @@ export const signIn = async (
 			throw new ResponseError(json.message);
 		}
 		const { token } = await res.json();
+
+		if (!token) {
+			throw new Error(AUTH_TOKEN_LOG_ERROR_MESSAGE);
+		}
+
 		await setAuthToken(token);
 	} catch (e) {
 		console.error(e);
@@ -71,7 +80,7 @@ export const signIn = async (
 		}
 		return {
 			success: false,
-			toast: { message: 'An unknown error occured' },
+			toast: { message: GENERIC_AUTH_ERROR_MESSAGE },
 			errors: {},
 		};
 	}

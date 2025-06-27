@@ -2,7 +2,7 @@ import { Divider } from '@heroui/react';
 import Link from 'next/link';
 
 import { usePathname, useSearchParams } from 'next/navigation';
-import { isActive, sidebarItems } from '@/lib/dashboard/sidebar/utils';
+import { isActive, sidebarItems } from '@/components/dashboard/UI/sidebar/utils';
 
 export default function Navigation({}) {
 	const pathname = usePathname();
