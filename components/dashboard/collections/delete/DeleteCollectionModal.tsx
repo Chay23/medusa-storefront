@@ -16,7 +16,7 @@ import {
 } from '@heroui/react';
 import Modal from '../../common/modal/Modal';
 
-import { ID_COLLECTION_DELETE } from '@/lib/dashboard/contants';
+import { ID_COLLECTION_DELETE } from '@/lib/dashboard/constants/componentIds';
 import { paths } from '@/config/paths';
 
 type Props = {
@@ -51,7 +51,9 @@ export default function DeleteCollectionModal({
 
 		if (actionState.success) {
 			onClose(ID_COLLECTION_DELETE);
-			revalidateList ? router.refresh() : router.push(paths.dashboard.collections.getHref());
+			revalidateList
+				? router.refresh()
+				: router.push(paths.dashboard.collections.getHref());
 		}
 	}, [actionState]);
 

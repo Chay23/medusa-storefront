@@ -4,8 +4,8 @@ import type { PaginationFields } from '@/types/api/common';
 
 import { getAdminURL } from '@/utils/env';
 import { getAuthHeader } from '../data/cookies';
-import { FETCH_ERROR_OBJECT_1 } from '../common/error/constants';
 import ResponseError from '@/lib/errors/ResponseError';
+import { FETCH_ERROR_OBJECT_1 } from '../constants/errors';
 
 export const handleFetch = async <T>(
 	url: string,

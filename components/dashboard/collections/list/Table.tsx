@@ -23,7 +23,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
-import { formatDate } from '@/lib/dashboard/list/utils';
+import { getListDateString } from '@/lib/dashboard/utils/date';
 import { useUpdateParams } from '@/hooks/useUpdateParams';
 import { paths } from '@/config/paths';
 
@@ -106,8 +106,8 @@ export default function CollectionsTable({
 								<TableCell>
 									{collection.products ? productsAmount : '-'}
 								</TableCell>
-								<TableCell>{formatDate(collection.created_at)}</TableCell>
-								<TableCell>{formatDate(collection.updated_at)}</TableCell>
+								<TableCell>{getListDateString(collection.created_at)}</TableCell>
+								<TableCell>{getListDateString(collection.updated_at)}</TableCell>
 								<TableCell>
 									<Dropdown>
 										<DropdownTrigger>
