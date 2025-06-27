@@ -4,7 +4,7 @@ import type { ActionStateWithValidation } from '@/types/api/actions/common';
 import type { Api } from '@/types/api';
 
 import { redirect } from 'next/navigation';
-import { setAuthToken } from './cookies';
+import { deleteAuthToken, setAuthToken } from './cookies';
 import { getAdminURL } from '@/utils/env';
 import { z } from 'zod';
 import { paths } from '@/config/paths';
@@ -85,4 +85,9 @@ export const signIn = async (
 		};
 	}
 	redirect(from || paths.dashboard.root.getHref());
+};
+
+export const signOut = async () => {
+	await deleteAuthToken();
+	redirect(paths.dashboard.signIn.getHref());
 };
