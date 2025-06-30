@@ -10,7 +10,7 @@ import { paths } from '@/config/paths';
 import {
 	VALIDATION_EMPTY_PASSWORD,
 	VALIDATION_INVALID_EMAIL,
-} from '@/lib/dashboard/constants/validation';
+} from '@/lib/dashboard/constants';
 import { setAuthToken } from '@/lib/dashboard/data/cookies';
 import { signIn } from '@/lib/dashboard/data/user';
 import { ActionStateWithValidation } from '@/types/api/actions/common';

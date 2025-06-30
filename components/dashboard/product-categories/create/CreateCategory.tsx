@@ -18,7 +18,7 @@ import CategoryForm from './Form';
 import NewCategoryRanking from './ranking/NewCategoryRanking';
 
 import { paths } from '@/config/paths';
-import { ID_CATEGORY_CREATE } from '@/lib/dashboard/constants/componentIds';
+import { ID_CATEGORY_CREATE } from '@/lib/dashboard/constants';
 import {
 	DETAILS_SECTION,
 	RANKING_SECTION,

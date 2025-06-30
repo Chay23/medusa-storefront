@@ -2,10 +2,9 @@ import type { Api } from '@/types/api';
 import type { RetrieveResponse } from '@/types/common/fetch';
 import type { PaginationFields } from '@/types/api/common';
 
-import { getAdminURL } from '@/utils/env';
+import { API_ADMIN_URL, FETCH_ERROR_OBJECT_1 } from '@/lib/dashboard/constants';
 import { getAuthHeader } from '../data/cookies';
 import ResponseError from '@/lib/errors/ResponseError';
-import { FETCH_ERROR_OBJECT_1 } from '../constants/errors';
 
 export const handleFetch = async <T>(
 	url: string,
@@ -65,6 +64,8 @@ export const handleActionFetch = async (
 			toast: { message: successMessage },
 		};
 	} catch (e) {
+		console.error(e);
+
 		if (e instanceof ResponseError) {
 			return {
 				success: false,
@@ -95,7 +96,6 @@ export const getPaginatedList = async <
 	queryParams?: Q
 ): Promise<RetrieveResponse<T>> => {
 	const offset = getPaginationOffset(limit, page);
-	const adminURL = getAdminURL();
 
 	const headers = {
 		...(await getAuthHeader()),
@@ -107,7 +107,7 @@ export const getPaginatedList = async <
 		offset: offset.toString(),
 	}).toString();
 
-	const url = `${adminURL}${path}?${_queryParams}`;
+	const url = `${API_ADMIN_URL}${path}?${_queryParams}`;
 
 	return await handleFetch<T>(url, { headers });
 };
@@ -120,7 +120,6 @@ export const getFullList = async <
 	path: string,
 	queryParams?: Q
 ): Promise<RetrieveResponse<T>> => {
-	const adminURL = getAdminURL();
 	let offset = 0;
 	const limit = 9999;
 
@@ -134,7 +133,7 @@ export const getFullList = async <
 		offset: offset.toString(),
 	});
 
-	let url = `${adminURL}${path}?${_queryParams.toString()}`;
+	let url = `${API_ADMIN_URL}${path}?${_queryParams.toString()}`;
 	let res = await handleFetch<T>(url, { headers });
 
 	if (!res.success) {
@@ -147,6 +146,6 @@ export const getFullList = async <
 
 	_queryParams.set('limit', (res.data as PaginationFields).count.toString());
 
-	url = `${adminURL}${path}?${_queryParams.toString()}`;
+	url = `${API_ADMIN_URL}${path}?${_queryParams.toString()}`;
 	return await handleFetch<T>(url, { headers });
 };

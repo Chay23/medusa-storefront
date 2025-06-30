@@ -21,7 +21,7 @@ import { useShallowUpdateParams } from '@/hooks/useShallowUpdateParams';
 import { showActionToast } from '@/lib/dashboard/utils';
 import { useDrawers } from '@/store/dashboard/drawers';
 
-import { ID_COLLECTION_EDIT } from '@/lib/dashboard/constants/componentIds';
+import { ID_COLLECTION_EDIT } from '@/lib/dashboard/constants';
 
 type Props = {
 	collection: AdminCollection;

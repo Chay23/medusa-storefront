@@ -5,19 +5,18 @@ import type { Api } from '@/types/api';
 
 import { redirect } from 'next/navigation';
 import { deleteAuthToken, setAuthToken } from './cookies';
-import { getAdminURL } from '@/utils/env';
 import { z } from 'zod';
 import { paths } from '@/config/paths';
 import ResponseError from '@/lib/errors/ResponseError';
+
 import {
+	API_ADMIN_URL,
 	VALIDATION_EMPTY_EMAIL,
 	VALIDATION_EMPTY_PASSWORD,
 	VALIDATION_INVALID_EMAIL,
-} from '../constants/validation';
-import {
 	AUTH_TOKEN_LOG_ERROR_MESSAGE,
 	GENERIC_AUTH_ERROR_MESSAGE,
-} from '../constants/errors';
+} from '../constants';
 
 export const signIn = async (
 	from: string | undefined,
@@ -47,10 +46,9 @@ export const signIn = async (
 
 		return { success: false, errors, toast: null };
 	}
-	const adminURL = getAdminURL();
 
 	try {
-		const res = await fetch(`${adminURL}/auth/user/emailpass`, {
+		const res = await fetch(`${API_ADMIN_URL}/auth/user/emailpass`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

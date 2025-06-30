@@ -16,7 +16,7 @@ import {
 } from '@heroui/react';
 import Modal from '../../common/modal/Modal';
 
-import { ID_COLLECTION_DELETE } from '@/lib/dashboard/constants/componentIds';
+import { ID_COLLECTION_DELETE } from '@/lib/dashboard/constants';
 import { paths } from '@/config/paths';
 
 type Props = {

@@ -8,12 +8,11 @@ import type {
 import type { RetrieveResponse } from '@/types/common/fetch';
 
 import { getAuthHeader } from './cookies';
-import { getAdminURL } from '@/utils/env';
+import { API_ADMIN_URL, LIMIT_OPTION } from '@/lib/dashboard/constants';
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { paths } from '@/config/paths';
 import { getPaginatedList, handleFetch } from '../services/api';
-import { LIMIT_OPTION } from '../constants';
 
 export const getCollections = async (
 	page = 1,
@@ -26,8 +25,7 @@ export const getCollections = async (
 export const getCollection = async (
 	id: string
 ): Promise<RetrieveResponse<Api.AdminCollectionResponse>> => {
-	const adminURL = getAdminURL();
-	const url = `${adminURL}/admin/collections/${id}`;
+	const url = `${API_ADMIN_URL}/admin/collections/${id}`;
 
 	const headers = {
 		...(await getAuthHeader()),
@@ -40,7 +38,6 @@ export const createCollection = async (
 	prevState: ActionState,
 	formData: FormData
 ): Promise<ActionStateWithValidation> => {
-	const adminURL = getAdminURL();
 	const rawFormData = {
 		title: formData.get('title'),
 		handle: formData.get('handle'),
@@ -66,7 +63,7 @@ export const createCollection = async (
 		...(await getAuthHeader()),
 	};
 
-	const res = await fetch(`${adminURL}/admin/collections`, {
+	const res = await fetch(`${API_ADMIN_URL}/admin/collections`, {
 		method: 'POST',
 		headers,
 		body: JSON.stringify(rawFormData),
@@ -94,7 +91,6 @@ export const updateCollection = async (
 	_: any,
 	formData: FormData
 ): Promise<ActionState> => {
-	const adminURL = getAdminURL();
 	const rawFormData = {
 		title: formData.get('title'),
 		handle: formData.get('handle'),
@@ -106,7 +102,7 @@ export const updateCollection = async (
 	};
 
 	try {
-		const res = await fetch(`${adminURL}/admin/collections/${id}`, {
+		const res = await fetch(`${API_ADMIN_URL}/admin/collections/${id}`, {
 			method: 'POST',
 			headers,
 			body: JSON.stringify(rawFormData),
@@ -134,15 +130,13 @@ export const deleteCollection = async ({
 }: {
 	id: string;
 }): Promise<ActionState> => {
-	const adminURL = getAdminURL();
-
 	const headers = {
 		'Content-Type': 'application/json',
 		...(await getAuthHeader()),
 	};
 
 	try {
-		const res = await fetch(`${adminURL}/admin/collections/${id}`, {
+		const res = await fetch(`${API_ADMIN_URL}/admin/collections/${id}`, {
 			method: 'DELETE',
 			headers,
 		});
