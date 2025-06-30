@@ -1,10 +1,10 @@
 'use server';
 
 import type { Api } from '@/types/api';
+import type { RetrieveResponse } from '@/types/common/fetch';
 
-import { RetrieveResponse } from '@/types/common/fetch';
 import { getPaginatedList } from '../services/api';
-import { LIMIT_OPTION } from '../constants';
+import { LIMIT_OPTION } from '../constants/api';
 
 export const getProducts = async (
 	page = 1,

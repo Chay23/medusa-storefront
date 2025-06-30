@@ -8,10 +8,9 @@ import {
 	getPaginatedList,
 	handleActionFetch,
 } from '../services/api';
-import { LIMIT_OPTION } from '../constants';
 import { AdminProductCategoryListResponse } from '@/types/api/product-categories';
-import { getAdminURL } from '@/utils/env';
 import { getAuthHeader } from './cookies';
+import { API_ADMIN_URL, LIMIT_OPTION } from '@/lib/dashboard/constants';
 
 export const getCategories = async (
 	page = 1,
@@ -39,7 +38,7 @@ export const createCategory = async (
 	_: ActionState,
 	formData: FormData
 ): Promise<ActionState> => {
-	const adminURL = getAdminURL();
+	const adminURL = API_ADMIN_URL;
 	const rawFormData = {
 		name: formData.get('name'),
 		...(formData.get('handle') && { handle: formData.get('handle') }),

@@ -1,5 +1,5 @@
 import { TEST_AUTH_TOKEN_VALUE } from '@/app/__tests__/__lib__/__constants__';
-import { AUTH_COOKIE_NAME } from '@/lib/dashboard/constants/cookies';
+import { AUTH_COOKIE_NAME } from '@/lib/dashboard/constants';
 import {
 	deleteAuthToken,
 	getAuthHeader,

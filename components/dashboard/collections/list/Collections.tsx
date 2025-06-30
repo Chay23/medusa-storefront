@@ -13,7 +13,7 @@ import CollectionsTable from './Table';
 import Breadcrumbs from '../../UI/breadcrumbs/Breadcrumbs';
 import DeleteCollectionModal from '../delete/DeleteCollectionModal';
 
-import { ID_COLLECTION_DELETE } from '@/lib/dashboard/constants/componentIds';
+import { ID_COLLECTION_DELETE } from '@/lib/dashboard/constants';
 import { paths } from '@/config/paths';
 
 type Props = {
