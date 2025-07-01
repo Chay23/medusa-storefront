@@ -12,7 +12,7 @@ export default {
 		extend: {
 			colors: {
 				background: 'var(--background)',
-				surface: 'var(--surface)',				
+				surface: 'var(--surface)',
 				loading: 'var(--loading)',
 				primary: 'var(--primary)',
 				'text-secondary': 'var(--text-secondary)',
