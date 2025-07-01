@@ -1,7 +1,7 @@
 export default function Loading() {
 	return (
 		<div className='content-container'>
-			<div className='w-full h-[50px] mb-7 bg-loading animate-pulse rounded'>
+			<div className='w-full h-[50px] mb-5 bg-loading animate-pulse rounded'>
 				<div></div>
 			</div>
 			<div className='w-full h-[56px] mb-4 bg-loading animate-pulse rounded'></div>

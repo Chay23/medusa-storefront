@@ -4,7 +4,14 @@ import type { AdminProductCategoryListResponse } from '@/types/api/product-categ
 
 import { useSearchParams } from 'next/navigation';
 import { useUpdateParams } from '@/hooks/useUpdateParams';
+import { useCallback } from 'react';
 
+import Link from 'next/link';
+import StatusIndicator from '../../UI/common/StatusIndicator';
+import TablePagination from '../../UI/table/TablePagination';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import {
 	Dropdown,
 	DropdownItem,
@@ -17,11 +24,6 @@ import {
 	TableHeader,
 	TableRow,
 } from '@heroui/react';
-import Link from 'next/link';
-import StatusIndicator from '../../UI/common/StatusIndicator';
-import TablePagination from '../../UI/table/TablePagination';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import { useCallback } from 'react';
 
 type Props = {
 	categoriesRes: AdminProductCategoryListResponse;
@@ -80,8 +82,18 @@ export default function CategoriesTable({ categoriesRes }: Props) {
 											</div>
 										</DropdownTrigger>
 										<DropdownMenu aria-label='Categories actions'>
-											<DropdownItem key='edit'>Edit</DropdownItem>
-											<DropdownItem key='delete'>Delete</DropdownItem>
+											<DropdownItem
+												key='edit'
+												startContent={<ModeEditOutlineOutlinedIcon />}
+											>
+												Edit
+											</DropdownItem>
+											<DropdownItem
+												key='delete'
+												startContent={<DeleteOutlineOutlinedIcon />}
+											>
+												Delete
+											</DropdownItem>
 										</DropdownMenu>
 									</Dropdown>
 								</TableCell>

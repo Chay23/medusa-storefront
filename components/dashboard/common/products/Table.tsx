@@ -23,7 +23,7 @@ export default function ProductsTable({ productsRes }: Props) {
 	return (
 		<div>
 			<Filters />
-			<Table selectionMode='multiple' aria-label='Products table'>
+			<Table selectionMode='multiple' aria-label='Products table' removeWrapper>
 				<TableHeader>
 					<TableColumn>Name</TableColumn>
 					<TableColumn>Created</TableColumn>

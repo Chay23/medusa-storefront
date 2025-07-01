@@ -15,6 +15,7 @@ export default function Products({ productsRes }: Props) {
 		<section className='content-container'>
 			<SectionHeader
 				title='Products'
+				className='mb-5'
 				endContent={
 					<div>
 						<Button color='primary'>Add Product</Button>

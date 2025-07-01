@@ -11,17 +11,21 @@
 	--primary-100: #f1f8e4;
 	--primary-200: #e2f2ca;
 	--primary-500: #607d4a;
+	--surface-border: var(--background);
+	--input-border: #d9d9d9;
 }
 
 [data-theme='dark'] {
 	--background: #121212;
 	--surface: #191919;
 	--loading: #555555;
+	--surface-border: hsl(240 5.26% 26.08%);
+	--input-border: hsl(240 5.26% 26.08%);
 }
 
 @layer components {
 	.content-container {
-		@apply bg-surface shadow-md rounded-2xl w-full p-6;
+		@apply bg-surface shadow-md rounded-2xl w-full px-6 py-5 border border-surface-border;
 	}
 }
 

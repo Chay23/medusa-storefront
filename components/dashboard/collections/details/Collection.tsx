@@ -68,6 +68,7 @@ export default function Collection({ collection, productsRes }: Props) {
 				<section className='content-container'>
 					<SectionHeader
 						title={collection.title}
+						className='mb-1'
 						endContent={
 							<Dropdown>
 								<DropdownTrigger>
@@ -100,6 +101,7 @@ export default function Collection({ collection, productsRes }: Props) {
 				<section className='content-container'>
 					<SectionHeader
 						title='Products'
+						className='mb-3'
 						endContent={
 							<div className='self-center cursor-pointer'>
 								<MoreHorizIcon />

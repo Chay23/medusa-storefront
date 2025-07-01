@@ -10,6 +10,8 @@ export default function CategoriesHeader() {
 	return (
 		<SectionHeader
 			title='Categories'
+			description='Manage your product categories'
+			className='mb-5'
 			endContent={
 				<Button
 					color='primary'

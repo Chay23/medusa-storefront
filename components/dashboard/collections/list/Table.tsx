@@ -3,6 +3,11 @@
 import type { Api } from '@/types/api';
 import type { AdminCollection } from '@/types/api/collections';
 
+import ResultsCount from '../../UI/table/ResultsCount';
+import Link from 'next/link';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import {
 	Dropdown,
 	DropdownItem,
@@ -17,9 +22,6 @@ import {
 	TableHeader,
 	TableRow,
 } from '@heroui/react';
-import ResultsCount from '../../UI/table/ResultsCount';
-import Link from 'next/link';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
@@ -106,8 +108,12 @@ export default function CollectionsTable({
 								<TableCell>
 									{collection.products ? productsAmount : '-'}
 								</TableCell>
-								<TableCell>{getListDateString(collection.created_at)}</TableCell>
-								<TableCell>{getListDateString(collection.updated_at)}</TableCell>
+								<TableCell>
+									{getListDateString(collection.created_at)}
+								</TableCell>
+								<TableCell>
+									{getListDateString(collection.updated_at)}
+								</TableCell>
 								<TableCell>
 									<Dropdown>
 										<DropdownTrigger>
@@ -121,12 +127,14 @@ export default function CollectionsTable({
 												href={`${paths.dashboard.collection.getHref(
 													collection.id
 												)}?edit=true`}
+												startContent={<ModeEditOutlineOutlinedIcon />}
 											>
 												Edit
 											</DropdownItem>
 											<DropdownItem
 												key='delete'
 												onPress={() => onDeleteModalOpen(collection)}
+												startContent={<DeleteOutlineOutlinedIcon />}
 											>
 												Delete
 											</DropdownItem>

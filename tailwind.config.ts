@@ -17,8 +17,9 @@ export default {
 				primary: 'var(--primary)',
 				'text-secondary': 'var(--text-secondary)',
 				'primary-100': 'var(--primary-100)',
-				'primary-200': 'var(--primary-200)'
-
+				'primary-200': 'var(--primary-200)',
+				'surface-border': 'var(--surface-border)',
+				'input-border': 'var(--input-border)',
 			},
 		},
 	},

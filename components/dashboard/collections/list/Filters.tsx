@@ -6,7 +6,7 @@ import { Filter } from 'lucide-react';
 
 export default function CollectionsFilters({}) {
 	return (
-		<div className='flex gap-4 justify-between items-center mb-6'>
+		<div className='flex gap-4 justify-between items-center mb-3'>
 			<div className='flex gap-3 items-center'>
 				<Filter />
 				<DateFilter

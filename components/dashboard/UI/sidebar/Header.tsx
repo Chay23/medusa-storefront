@@ -22,7 +22,7 @@ export default function Header() {
 							icon: <PersonOutlineOutlinedIcon />,
 						}}
 						name='Nazar Shcherbii'
-						className='border p-2 w-full justify-start cursor-pointer'
+						className='border border-input-border p-2 w-full justify-start cursor-pointer'
 					></User>
 				</DropdownTrigger>
 				<DropdownMenu>
