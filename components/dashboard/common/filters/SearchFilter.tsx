@@ -30,7 +30,7 @@ export default function SearchFilter({ placeholder = '' }: Props) {
 	return (
 		<Input
 			startContent={<SearchIcon />}
-			className='border rounded-xl w-fit'
+			className='border border-input-border rounded-xl w-fit'
 			placeholder={placeholder}
 			value={searchValue}
 			onValueChange={handleSearchChange}

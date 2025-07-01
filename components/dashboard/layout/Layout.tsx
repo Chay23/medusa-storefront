@@ -10,7 +10,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 		<>
 			<div className='flex h-screen overflow-hidden'>
 				<Sidebar />
-				<main className='p-9 w-full bg-background overflow-auto'>{children}</main>
+				<main className='px-9 py-5 w-full bg-background overflow-auto'>{children}</main>
 			</div>
 			<Toaster position='bottom-right' />
 		</>
