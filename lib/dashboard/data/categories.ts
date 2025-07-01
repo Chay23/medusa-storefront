@@ -2,13 +2,14 @@
 
 import type { Api } from '@/types/api';
 import type { ActionState } from '@/types/api/actions/common';
+import type { RetrieveResponse } from '@/types/common/fetch';
 
 import {
 	getFullList,
 	getPaginatedList,
 	handleActionFetch,
+	handleFetch,
 } from '../services/api';
-import { AdminProductCategoryListResponse } from '@/types/api/product-categories';
 import { getAuthHeader } from './cookies';
 import { API_ADMIN_URL, LIMIT_OPTION } from '@/lib/dashboard/constants';
 
@@ -17,7 +18,7 @@ export const getCategories = async (
 	queryParams?: Api.FindParams & Api.SearchParams
 ) => {
 	const limit = queryParams?.limit || LIMIT_OPTION;
-	return await getPaginatedList<AdminProductCategoryListResponse>(
+	return await getPaginatedList<Api.AdminProductCategoryListResponse>(
 		page,
 		limit,
 		'/admin/product-categories',
@@ -28,10 +29,22 @@ export const getCategories = async (
 export const getAllCategories = async (
 	queryParams?: Api.AdminProductCategoryListParams
 ) => {
-	return await getFullList<AdminProductCategoryListResponse>(
+	return await getFullList<Api.AdminProductCategoryListResponse>(
 		'/admin/product-categories',
 		queryParams
 	);
+};
+
+export const getCategory = async (
+	id: string
+): Promise<RetrieveResponse<Api.AdminProductCategoryResponse>> => {
+	const url = `${API_ADMIN_URL}/admin/product-categories/${id}`;
+
+	const headers = {
+		...(await getAuthHeader()),
+	};
+
+	return handleFetch(url, { headers });
 };
 
 export const createCategory = async (

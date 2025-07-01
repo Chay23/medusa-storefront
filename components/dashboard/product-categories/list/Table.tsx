@@ -25,6 +25,8 @@ import {
 	TableRow,
 } from '@heroui/react';
 
+import { paths } from '@/config/paths';
+
 type Props = {
 	categoriesRes: AdminProductCategoryListResponse;
 };
@@ -60,6 +62,7 @@ export default function CategoriesTable({ categoriesRes }: Props) {
 							<TableRow
 								key={category.id}
 								as={Link}
+								href={paths.dashboard.category.getHref(category.id)}
 								className='cursor-pointer transition-background duration-300 hover:bg-background border-b border-foreground-100'
 							>
 								<TableCell>{category.name}</TableCell>
