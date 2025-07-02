@@ -10,7 +10,7 @@ import { paths } from '@/config/paths';
 import ResponseError from '@/lib/errors/ResponseError';
 
 import {
-	API_ADMIN_URL,
+	API_URL,
 	VALIDATION_EMPTY_EMAIL,
 	VALIDATION_EMPTY_PASSWORD,
 	VALIDATION_INVALID_EMAIL,
@@ -48,7 +48,7 @@ export const signIn = async (
 	}
 
 	try {
-		const res = await fetch(`${API_ADMIN_URL}/auth/user/emailpass`, {
+		const res = await fetch(`${API_URL}/auth/user/emailpass`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

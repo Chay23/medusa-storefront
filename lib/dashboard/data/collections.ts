@@ -8,7 +8,7 @@ import type {
 import type { RetrieveResponse } from '@/types/common/fetch';
 
 import { getAuthHeader } from './cookies';
-import { API_ADMIN_URL, LIMIT_OPTION } from '@/lib/dashboard/constants';
+import { API_URL, LIMIT_OPTION } from '@/lib/dashboard/constants';
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { paths } from '@/config/paths';
@@ -25,7 +25,7 @@ export const getCollections = async (
 export const getCollection = async (
 	id: string
 ): Promise<RetrieveResponse<Api.AdminCollectionResponse>> => {
-	const url = `${API_ADMIN_URL}/admin/collections/${id}`;
+	const url = `${API_URL}/admin/collections/${id}`;
 
 	const headers = {
 		...(await getAuthHeader()),
@@ -63,7 +63,7 @@ export const createCollection = async (
 		...(await getAuthHeader()),
 	};
 
-	const res = await fetch(`${API_ADMIN_URL}/admin/collections`, {
+	const res = await fetch(`${API_URL}/admin/collections`, {
 		method: 'POST',
 		headers,
 		body: JSON.stringify(rawFormData),
@@ -102,7 +102,7 @@ export const updateCollection = async (
 	};
 
 	try {
-		const res = await fetch(`${API_ADMIN_URL}/admin/collections/${id}`, {
+		const res = await fetch(`${API_URL}/admin/collections/${id}`, {
 			method: 'POST',
 			headers,
 			body: JSON.stringify(rawFormData),
@@ -136,7 +136,7 @@ export const deleteCollection = async ({
 	};
 
 	try {
-		const res = await fetch(`${API_ADMIN_URL}/admin/collections/${id}`, {
+		const res = await fetch(`${API_URL}/admin/collections/${id}`, {
 			method: 'DELETE',
 			headers,
 		});

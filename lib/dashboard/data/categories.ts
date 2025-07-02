@@ -11,7 +11,7 @@ import {
 	handleFetch,
 } from '../services/api';
 import { getAuthHeader } from './cookies';
-import { API_ADMIN_URL, LIMIT_OPTION } from '@/lib/dashboard/constants';
+import { API_URL, LIMIT_OPTION } from '@/lib/dashboard/constants';
 
 export const getCategories = async (
 	page = 1,
@@ -38,7 +38,7 @@ export const getAllCategories = async (
 export const getCategory = async (
 	id: string
 ): Promise<RetrieveResponse<Api.AdminProductCategoryResponse>> => {
-	const url = `${API_ADMIN_URL}/admin/product-categories/${id}`;
+	const url = `${API_URL}/admin/product-categories/${id}`;
 
 	const headers = {
 		...(await getAuthHeader()),
@@ -51,7 +51,7 @@ export const createCategory = async (
 	_: ActionState,
 	formData: FormData
 ): Promise<ActionState> => {
-	const adminURL = API_ADMIN_URL;
+	const adminURL = API_URL;
 	const rawFormData = {
 		name: formData.get('name'),
 		...(formData.get('handle') && { handle: formData.get('handle') }),
