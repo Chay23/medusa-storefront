@@ -4,6 +4,8 @@ import type { PaginationFields } from '@/types/api/common';
 
 import { API_URL, FETCH_ERROR_OBJECT_1 } from '@/lib/dashboard/constants';
 import { getAuthHeader } from '../data/cookies';
+import { stringify } from 'qs';
+
 import ResponseError from '@/lib/errors/ResponseError';
 
 export const handleFetch = async <T>(
@@ -85,15 +87,11 @@ export const getPaginationOffset = (limitParam: number, pageParam: number) => {
 	return offset;
 };
 
-export const getPaginatedList = async <
-	T,
-	Q extends Api.FindParams & Api.SearchParams = Api.FindParams &
-		Api.SearchParams
->(
+export const getPaginatedList = async <T>(
 	page: number,
 	limit: number,
 	path: string,
-	queryParams?: Q
+	queryParams?: Record<string, unknown>
 ): Promise<RetrieveResponse<T>> => {
 	const offset = getPaginationOffset(limit, page);
 
@@ -101,11 +99,11 @@ export const getPaginatedList = async <
 		...(await getAuthHeader()),
 	};
 
-	const _queryParams = new URLSearchParams({
-		...(queryParams && { ...queryParams }),
+	const _queryParams = stringify({
+		...queryParams,
 		limit: limit.toString(),
 		offset: offset.toString(),
-	}).toString();
+	});
 
 	const url = `${API_URL}${path}?${_queryParams}`;
 
