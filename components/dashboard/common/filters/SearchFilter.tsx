@@ -3,15 +3,15 @@
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
-import { Input } from '@heroui/react';
 
+import { Input } from '@heroui/input';
 import SearchIcon from '@mui/icons-material/Search';
 
 type Props = {
-	placeholder: string;
+	placeholder?: string;
 };
 
-export default function SearchFilter({ placeholder = '' }: Props) {
+export default function SearchFilter({ placeholder = 'Search' }: Props) {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const [searchValue, setSearchValue] = useState(searchParams.get('q') || '');
@@ -30,7 +30,7 @@ export default function SearchFilter({ placeholder = '' }: Props) {
 	return (
 		<Input
 			startContent={<SearchIcon />}
-			className='border border-input-border rounded-xl w-fit'
+			className='self-start border border-input-border rounded-xl w-fit'
 			placeholder={placeholder}
 			value={searchValue}
 			onValueChange={handleSearchChange}
