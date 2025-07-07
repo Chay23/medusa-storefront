@@ -2,7 +2,7 @@ import type { Api } from '@/types/api';
 import type { RetrieveResponse } from '@/types/common/fetch';
 import type { PaginationFields } from '@/types/api/common';
 
-import { API_ADMIN_URL, FETCH_ERROR_OBJECT_1 } from '@/lib/dashboard/constants';
+import { API_URL, FETCH_ERROR_OBJECT_1 } from '@/lib/dashboard/constants';
 import { getAuthHeader } from '../data/cookies';
 import ResponseError from '@/lib/errors/ResponseError';
 
@@ -107,7 +107,7 @@ export const getPaginatedList = async <
 		offset: offset.toString(),
 	}).toString();
 
-	const url = `${API_ADMIN_URL}${path}?${_queryParams}`;
+	const url = `${API_URL}${path}?${_queryParams}`;
 
 	return await handleFetch<T>(url, { headers });
 };
@@ -133,7 +133,7 @@ export const getFullList = async <
 		offset: offset.toString(),
 	});
 
-	let url = `${API_ADMIN_URL}${path}?${_queryParams.toString()}`;
+	let url = `${API_URL}${path}?${_queryParams.toString()}`;
 	let res = await handleFetch<T>(url, { headers });
 
 	if (!res.success) {
@@ -146,6 +146,6 @@ export const getFullList = async <
 
 	_queryParams.set('limit', (res.data as PaginationFields).count.toString());
 
-	url = `${API_ADMIN_URL}${path}?${_queryParams.toString()}`;
+	url = `${API_URL}${path}?${_queryParams.toString()}`;
 	return await handleFetch<T>(url, { headers });
 };
