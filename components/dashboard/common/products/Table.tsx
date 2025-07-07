@@ -1,3 +1,5 @@
+'use client';
+
 import type { Api } from '@/types/api';
 
 import {
@@ -9,9 +11,7 @@ import {
 	TableRow,
 } from '@heroui/react';
 import ResultsCount from '../../UI/table/ResultsCount';
-
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import Filters from './Filters';
 
 type Props = {
 	productsRes: Api.ProductsResponse;
@@ -22,8 +22,7 @@ export default function ProductsTable({ productsRes }: Props) {
 
 	return (
 		<div>
-			<Filters />
-			<Table selectionMode='multiple' aria-label='Products table' removeWrapper>
+			<Table aria-label='Products table' removeWrapper>
 				<TableHeader>
 					<TableColumn>Name</TableColumn>
 					<TableColumn>Created</TableColumn>
@@ -33,7 +32,7 @@ export default function ProductsTable({ productsRes }: Props) {
 						<></>
 					</TableColumn>
 				</TableHeader>
-				<TableBody>
+				<TableBody emptyContent='No products found'>
 					{products.map((product) => {
 						const created = product.created_at
 							? new Date(product.created_at).toLocaleDateString('en-US', {
