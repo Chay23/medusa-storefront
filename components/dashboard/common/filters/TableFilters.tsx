@@ -2,10 +2,11 @@
 
 import type { UI } from '@/types/ui';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useUpdateParams } from '@/hooks/useUpdateParams';
 import { getInitialFilters, removeAllFilterParams } from './utils';
+import { useShallowUpdateParams } from '@/hooks/useShallowUpdateParams';
 
 import { TableFiltersContext } from './context';
 import CloseIcon from '@mui/icons-material/Close';
@@ -23,18 +24,32 @@ import {
 
 type Props = {
 	filters: UI.Filter[];
+	invalidFilterParams: string[];
 	includeSearch?: boolean;
 };
 
 export default function TableFilters({
 	filters,
+	invalidFilterParams,
 	includeSearch = false,
 }: Props) {
 	const searchParams = useSearchParams();
+	const { shallowUpdateParams } = useShallowUpdateParams();
 	const { updateParams } = useUpdateParams();
 	const [activeFilters, setActiveFilters] = useState<UI.Filter[]>(
-		getInitialFilters({ searchParams, filters })
+		getInitialFilters({ searchParams, filters, invalidFilterParams })
 	);
+
+	useEffect(() => {
+		if (invalidFilterParams.length > 0) {
+			const paramsToRemove = invalidFilterParams.reduce((obj, param) => {
+				obj[param] = null;
+				return obj;
+			}, {} as Record<string, null>);
+
+			shallowUpdateParams(paramsToRemove);
+		}
+	}, []);
 
 	const handleAddFilter = (filter: UI.Filter) => {
 		return () =>
