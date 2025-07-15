@@ -4,12 +4,12 @@ import type { WithUndefined } from '@/types/utils/common';
 import { getProducts } from '@/lib/dashboard/data/products';
 import { validateQueryParams } from '@/lib/common/utils/params';
 
-import ProductFilters from '@/components/dashboard/common/products/Filters';
 import ProductsTable from '@/components/dashboard/common/products/Table';
 import ProductsHeader from '@/components/dashboard/products/ProductsHeader';
 import Error from '@/components/dashboard/UI/error/Error';
 import LoadingTable from '@/components/dashboard/UI/loading/LoadingTable';
 import { Suspense } from 'react';
+import ProductDataTableControls from '@/components/dashboard/common/products/ProductDataTableControls';
 
 type SearchParams = WithUndefined<HttpTypes.AdminProductListParams>;
 
@@ -33,7 +33,7 @@ export default async function Page({ searchParams }: Props) {
 		<section className='content-container'>
 			<ProductsHeader />
 			<Suspense fallback={<LoadingTable />}>
-				<ProductFilters invalidFilterParams={invalidParams} />
+				<ProductDataTableControls invalidFilterParams={invalidParams} />
 				<ProductsTable productsRes={productsRes.data} />
 			</Suspense>
 		</section>

@@ -2,6 +2,12 @@
 
 import type { UI } from '@/types/ui';
 
+import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
+import { useUpdateParams } from '@/hooks/useUpdateParams';
+import { useTableFilterContext } from '../context';
+import { useMemo, useState } from 'react';
+
+import CloseIcon from '@mui/icons-material/Close';
 import {
 	Button,
 	ButtonGroup,
@@ -11,11 +17,6 @@ import {
 	DropdownTrigger,
 	Selection,
 } from '@heroui/react';
-import { useMemo, useState } from 'react';
-import { useTableFilterContext } from '../context';
-import CloseIcon from '@mui/icons-material/Close';
-import { useUpdateParams } from '@/hooks/useUpdateParams';
-import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
 
 const getInitialValue = ({
 	searchParams,

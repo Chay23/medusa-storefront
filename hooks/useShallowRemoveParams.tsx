@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useShallowUpdateParams } from './useShallowUpdateParams';
 
-export default function useShallowRemoveParams(params: string[]) {
+export function useShallowRemoveParams(params: string[]) {
 	const { shallowUpdateParams } = useShallowUpdateParams();
 
 	useEffect(() => {

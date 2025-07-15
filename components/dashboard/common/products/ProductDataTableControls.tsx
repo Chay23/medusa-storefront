@@ -4,7 +4,7 @@ import { getAllProductTypes } from '@/lib/dashboard/data/product-types';
 import { getAllProductTags } from '@/lib/dashboard/data/product-tags';
 
 import Error from '../../UI/error/Error';
-import TableFilters from '../filters/TableFilters';
+import DataTableControls from '../data-table-controls/DataTableControls';
 
 import { getProductFilters } from '@/lib/dashboard/utils/filters';
 
@@ -12,7 +12,9 @@ type Props = {
 	invalidFilterParams: string[];
 };
 
-export default async function ProductFilters({ invalidFilterParams }: Props) {
+export default async function ProductDataTableControls({
+	invalidFilterParams,
+}: Props) {
 	const [productTypes, productTags] = await Promise.all([
 		getAllProductTypes(),
 		getAllProductTags(),
@@ -28,10 +30,10 @@ export default async function ProductFilters({ invalidFilterParams }: Props) {
 	});
 
 	return (
-		<TableFilters
+		<DataTableControls
 			filters={filters}
 			includeSearch
-			invalidFilterParams={invalidFilterParams}
+			invalidParams={invalidFilterParams}
 		/>
 	);
 }

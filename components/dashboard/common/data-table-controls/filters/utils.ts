@@ -4,19 +4,24 @@ import type { ReadonlyURLSearchParams } from 'next/navigation';
 export const getInitialFilters = ({
 	searchParams,
 	filters,
+	invalidParams,
 }: {
 	searchParams: ReadonlyURLSearchParams;
 	filters: UI.Filter[];
+	invalidParams: string[];
 }) => {
 	const params = new URLSearchParams(searchParams);
-	const tempFilters: UI.Filter[] = [];
-	params.forEach((_, key) => {
-		const filter = filters.find((f) => f.key === key);
+	const initialFilters: UI.Filter[] = [];
+	params.forEach((_, paramKey) => {
+		if (invalidParams.includes(paramKey)) {
+			return;
+		}
+		const filter = filters.find((f) => f.key === paramKey);
 		if (filter) {
-			tempFilters.push({ ...filter, openOnMount: false } as UI.Filter);
+			initialFilters.push({ ...filter, openOnMount: false } as UI.Filter);
 		}
 	});
-	return tempFilters;
+	return initialFilters;
 };
 
 export const removeAllFilterParams = (filters: UI.Filter[]) => {
