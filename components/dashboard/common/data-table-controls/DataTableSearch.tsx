@@ -11,7 +11,7 @@ type Props = {
 	placeholder?: string;
 };
 
-export default function SearchFilter({ placeholder = 'Search' }: Props) {
+export default function DataTableSearch({ placeholder = 'Search' }: Props) {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const [searchValue, setSearchValue] = useState(searchParams.get('q') || '');
