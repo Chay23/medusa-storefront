@@ -3,12 +3,17 @@
 	--surface: #fcfcfc;
 	--loading: #cacaca;
 	--primary: #607d4a;
+	--secondary: #674a7d;
 	--text-secondary: #747474;
 	--primary-100: #f1f8e4;
 	--primary-200: #e2f2ca;
 	--primary-500: #607d4a;
 	--surface-border: var(--background);
 	--input-border: #d9d9d9;
+	--danger-500: #f44336;
+	--success-500: #4caf50;
+	--warning-500: #ffc107;
+	--default-500: #9e9e9e;
 }
 
 [data-theme='dark'] {
