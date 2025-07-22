@@ -1,0 +1,7 @@
+@tailwind components;
+
+@layer components {
+	.content-container {
+		@apply bg-surface shadow-md rounded-2xl w-full px-6 py-5 border border-surface-border;
+	}
+}

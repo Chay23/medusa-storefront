@@ -15,11 +15,16 @@ export default {
 				surface: 'var(--surface)',
 				loading: 'var(--loading)',
 				primary: 'var(--primary)',
+				secondary: 'var(--secondary)',
 				'text-secondary': 'var(--text-secondary)',
 				'primary-100': 'var(--primary-100)',
 				'primary-200': 'var(--primary-200)',
 				'surface-border': 'var(--surface-border)',
 				'input-border': 'var(--input-border)',
+				'danger-500': 'var(--danger-500)',
+				'success-500': 'var(--success-500)',
+				'warning-500': 'var(--warning-500)',
+				'default-500': 'var(--default-500)',
 			},
 		},
 	},
@@ -31,6 +36,9 @@ export default {
 						primary: {
 							DEFAULT: 'var(--primary)',
 						},
+						secondary: {
+							DEFAULT: 'var(--secondary)',
+						},
 					},
 				},
 				dark: {
@@ -38,6 +46,9 @@ export default {
 						primary: {
 							foreground: '#FFFFFF',
 							DEFAULT: 'var(--primary)',
+						},
+						secondary: {
+							DEFAULT: 'var(--secondary)',
 						},
 					},
 				},
