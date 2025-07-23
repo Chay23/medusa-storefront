@@ -1,12 +1,12 @@
 import type { ReactNode } from 'react';
 
+import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
+import FeaturedPlayListIcon from '@mui/icons-material/FeaturedPlayList';
+import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
-import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
-import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import FeaturedPlayListIcon from '@mui/icons-material/FeaturedPlayList';
 
 import { paths } from '@/config/paths';
 
@@ -35,7 +35,7 @@ export const sidebarItems: (
 	{
 		type: 'item',
 		key: '/dashboard/categories',
-		label: 'Catregories',
+		label: 'Categories',
 		icon: <CategoryOutlinedIcon />,
 	},
 

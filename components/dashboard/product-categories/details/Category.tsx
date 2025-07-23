@@ -1,8 +1,8 @@
 import { getCategory } from '@/lib/dashboard/data/categories';
 
-import Error from '../../UI/error/Error';
 import CategoryBreadcrumbs from './CategoryBreadcrumbs';
-import CategoryDetails from './CategoryDetails';
+import CategoryGeneral from './general/CategoryGeneral';
+import Error from '../../UI/error/Error';
 
 type Props = {
 	id: string;
@@ -18,7 +18,7 @@ export default async function Category({ id }: Props) {
 	return (
 		<>
 			<CategoryBreadcrumbs category={data.product_category} />
-			<CategoryDetails category={data.product_category} />
+			<CategoryGeneral category={data.product_category} />
 		</>
 	);
 }

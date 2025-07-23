@@ -1,30 +1,32 @@
 'use client';
 
-import type { Breadcrumb } from '@/types/common/breadcrumbs';
 import type { Inputs, WithNewCategory } from './types';
-import type { Api } from '@/types/api';
-import type { RetrieveResponse } from '@/types/common/fetch';
 
-import { useForm } from 'react-hook-form';
 import { Suspense, useActionState, useEffect, useState } from 'react';
-import { createCategory } from '@/lib/dashboard/data/categories';
-import { showActionToast } from '@/lib/dashboard/utils';
+
 import { redirect } from 'next/navigation';
 
 import { Form, Tab, Tabs } from '@heroui/react';
-import Breadcrumbs from '../../UI/breadcrumbs/Breadcrumbs';
-import LoadingSpinner from '../../UI/spinner/LoadingSpinner';
-import CategoryForm from './Form';
-import NewCategoryRanking from './ranking/NewCategoryRanking';
+import { useForm } from 'react-hook-form';
 
 import { paths } from '@/config/paths';
 import { ID_CATEGORY_CREATE } from '@/lib/dashboard/constants';
+import { createCategory } from '@/lib/dashboard/data/categories';
+import { showActionToast } from '@/lib/dashboard/utils';
+import type { Api } from '@/types/api';
+import type { Breadcrumb } from '@/types/common/breadcrumbs';
+import type { RetrieveResponse } from '@/types/common/fetch';
+
+import CategoryForm from './Form';
+import NewCategoryRanking from './ranking/NewCategoryRanking';
+import Breadcrumbs from '../../UI/breadcrumbs/Breadcrumbs';
+import LoadingSpinner from '../../UI/spinner/LoadingSpinner';
 import {
 	DETAILS_SECTION,
 	RANKING_SECTION,
-	statusOptions,
-	visibilityOptions,
-} from './constants';
+	STATUS_OPTIONS,
+	VISIBILITY_OPTIONS,
+} from '../constants';
 
 const breadcrumbs: Breadcrumb[] = [
 	{
@@ -53,8 +55,8 @@ export default function CreateCategory({ categoriesPromise }: Props) {
 			name: '',
 			handle: '',
 			description: '',
-			is_active: statusOptions[0].key,
-			is_internal: visibilityOptions[0].key,
+			is_active: STATUS_OPTIONS[0].key,
+			is_internal: VISIBILITY_OPTIONS[0].key,
 		},
 	});
 	const [selectedSection, setSelectedSection] = useState(DETAILS_SECTION);
