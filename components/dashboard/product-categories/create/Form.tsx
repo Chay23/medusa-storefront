@@ -1,10 +1,15 @@
 import { Button, Input, Select, SelectItem, Textarea } from '@heroui/react';
 import { Control, Controller } from 'react-hook-form';
+
 import { Inputs } from './types';
-import { RANKING_SECTION, statusOptions, visibilityOptions } from './constants';
+import {
+	RANKING_SECTION,
+	STATUS_OPTIONS,
+	VISIBILITY_OPTIONS,
+} from '../constants';
 
 type Props = {
-	control: Control<Inputs, any, Inputs>;
+	control: Control<Inputs, unknown, Inputs>;
 	isItemsLoading: boolean;
 	onSectionChange: (key: string | number) => Promise<void>;
 };
@@ -87,7 +92,7 @@ export default function CategoryForm({
 								defaultSelectedKeys={[value]}
 								disallowEmptySelection
 							>
-								{statusOptions.map((option) => (
+								{STATUS_OPTIONS.map((option) => (
 									<SelectItem key={option.key}>{option.label}</SelectItem>
 								))}
 							</Select>
@@ -106,7 +111,7 @@ export default function CategoryForm({
 								defaultSelectedKeys={[value]}
 								disallowEmptySelection
 							>
-								{visibilityOptions.map((option) => (
+								{VISIBILITY_OPTIONS.map((option) => (
 									<SelectItem key={option.key}>{option.label}</SelectItem>
 								))}
 							</Select>

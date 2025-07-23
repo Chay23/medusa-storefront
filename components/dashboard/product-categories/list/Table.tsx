@@ -1,17 +1,10 @@
 'use client';
 
-import type { AdminProductCategoryListResponse } from '@/types/api/product-categories';
-
-import { useSearchParams } from 'next/navigation';
-import { useUpdateParams } from '@/hooks/useUpdateParams';
 import { useCallback } from 'react';
 
 import Link from 'next/link';
-import StatusIndicator from '../../UI/common/StatusIndicator';
-import TablePagination from '../../UI/table/TablePagination';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import { useSearchParams } from 'next/navigation';
+
 import {
 	Dropdown,
 	DropdownItem,
@@ -24,8 +17,22 @@ import {
 	TableHeader,
 	TableRow,
 } from '@heroui/react';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 import { paths } from '@/config/paths';
+import { useUpdateParams } from '@/hooks/useUpdateParams';
+import type { AdminProductCategoryListResponse } from '@/types/api/product-categories';
+
+import StatusBadge from '../../UI/common/StatusBadge';
+import TablePagination from '../../UI/table/TablePagination';
+import {
+	STATUS_ACTIVE_LABEL,
+	STATUS_INACTIVE_LABEL,
+	VISIBILITY_INTERNAL_LABEL,
+	VISIBILITY_PUBLIC_LABEL,
+} from '../constants';
 
 type Props = {
 	categoriesRes: AdminProductCategoryListResponse;
@@ -38,9 +45,12 @@ export default function CategoriesTable({ categoriesRes }: Props) {
 	const { offset, limit, count, product_categories } = categoriesRes;
 	const page = parseInt(searchParams.get('page') || '1');
 
-	const handlePageChange = useCallback((page: number) => {
-		updateParams({ page: page.toString() });
-	}, []);
+	const handlePageChange = useCallback(
+		(page: number) => {
+			updateParams({ page: page.toString() });
+		},
+		[updateParams]
+	);
 
 	return (
 		<>
@@ -56,8 +66,12 @@ export default function CategoriesTable({ categoriesRes }: Props) {
 				</TableHeader>
 				<TableBody emptyContent='No Results Found'>
 					{product_categories.map((category) => {
-						const status = category.is_active ? 'Active' : 'Inactive';
-						const visibility = category.is_internal ? 'Hidden' : 'Visible';
+						const status = category.is_active
+							? STATUS_ACTIVE_LABEL
+							: STATUS_INACTIVE_LABEL;
+						const visibility = category.is_internal
+							? VISIBILITY_INTERNAL_LABEL
+							: VISIBILITY_PUBLIC_LABEL;
 						return (
 							<TableRow
 								key={category.id}
@@ -68,14 +82,18 @@ export default function CategoriesTable({ categoriesRes }: Props) {
 								<TableCell>{category.name}</TableCell>
 								<TableCell>{category.handle}</TableCell>
 								<TableCell>
-									<StatusIndicator value={category.is_active}>
+									<StatusBadge
+										color={category.is_active ? 'success' : 'danger'}
+									>
 										{status}
-									</StatusIndicator>
+									</StatusBadge>
 								</TableCell>
 								<TableCell>
-									<StatusIndicator value={category.is_internal}>
+									<StatusBadge
+										color={category.is_internal ? 'default' : 'success'}
+									>
 										{visibility}
-									</StatusIndicator>
+									</StatusBadge>
 								</TableCell>
 								<TableCell>
 									<Dropdown>

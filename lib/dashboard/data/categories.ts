@@ -1,17 +1,21 @@
 'use server';
 
+import {
+	STATUS_ACTIVE_KEY,
+	VISIBILITY_INTERNAL_KEY,
+} from '@/components/dashboard/product-categories/constants';
+import { API_URL, LIMIT_OPTION } from '@/lib/dashboard/constants';
 import type { Api } from '@/types/api';
 import type { ActionState } from '@/types/api/actions/common';
 import type { RetrieveResponse } from '@/types/common/fetch';
 
+import { getAuthHeader } from './cookies';
 import {
 	getFullList,
 	getPaginatedList,
 	handleActionFetch,
 	handleFetch,
 } from '../services/api';
-import { getAuthHeader } from './cookies';
-import { API_URL, LIMIT_OPTION } from '@/lib/dashboard/constants';
 
 export const getCategories = async (
 	page = 1,
@@ -56,8 +60,9 @@ export const createCategory = async (
 		name: formData.get('name'),
 		...(formData.get('handle') && { handle: formData.get('handle') }),
 		description: formData.get('description'),
-		is_active: formData.get('is_active') === 'active' ? true : false,
-		is_internal: formData.get('is_internal') === 'internal' ? true : false,
+		is_active: formData.get('is_active') === STATUS_ACTIVE_KEY ? true : false,
+		is_internal:
+			formData.get('is_internal') === VISIBILITY_INTERNAL_KEY ? true : false,
 		rank: parseInt(formData.get('rank') as string),
 		parent_category_id: null,
 	};
