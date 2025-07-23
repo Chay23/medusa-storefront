@@ -1,6 +1,6 @@
 'use client';
 
-import type { AdminCollection } from '@/types/api/collections';
+import { useActionState, useEffect, useMemo } from 'react';
 
 import {
 	Button,
@@ -12,16 +12,16 @@ import {
 	Form,
 	Input,
 } from '@heroui/react';
-import Drawer from '../../common/drawer/Drawer';
-
-import { useActionState, useEffect, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { updateCollection } from '@/lib/dashboard/data/collections';
+
 import { useShallowUpdateParams } from '@/hooks/useShallowUpdateParams';
+import { ID_COLLECTION_EDIT } from '@/lib/dashboard/constants';
+import { updateCollection } from '@/lib/dashboard/data/collections';
 import { showActionToast } from '@/lib/dashboard/utils';
 import { useDrawers } from '@/store/dashboard/drawers';
+import type { AdminCollection } from '@/types/api/collections';
 
-import { ID_COLLECTION_EDIT } from '@/lib/dashboard/constants';
+import Drawer from '../../common/drawer/Drawer';
 
 type Props = {
 	collection: AdminCollection;
@@ -33,7 +33,7 @@ type Inputs = {
 };
 
 export default function EditCollectionDrawer({ collection }: Props) {
-	const onClose = useDrawers((state) => state.closeDrawer);
+	const closeDrawer = useDrawers((state) => state.closeDrawer);
 	const { shallowUpdateParams } = useShallowUpdateParams();
 	const boundUpdateCollection = useMemo(
 		() => updateCollection.bind(null, { id: collection.id }),
@@ -63,18 +63,18 @@ export default function EditCollectionDrawer({ collection }: Props) {
 		showActionToast(ID_COLLECTION_EDIT, actionState);
 
 		if (actionState.success) {
-			onClose(ID_COLLECTION_EDIT);
+			closeDrawer(ID_COLLECTION_EDIT);
 		}
 	}, [actionState]);
 
 	const handleDrawerClose = () => {
-		onClose(ID_COLLECTION_EDIT);
+		closeDrawer(ID_COLLECTION_EDIT);
 		reset();
 		shallowUpdateParams({ edit: null });
 	};
 
 	return (
-		<Drawer id={ID_COLLECTION_EDIT} onBeforeClose={handleDrawerClose}>
+		<Drawer id={ID_COLLECTION_EDIT} onClose={handleDrawerClose}>
 			<Form action={formAction}>
 				<DrawerContent>
 					<DrawerHeader className='flex-col'>
