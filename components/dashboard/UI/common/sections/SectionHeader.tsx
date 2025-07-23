@@ -22,8 +22,8 @@ export default function SectionHeader({
 	return (
 		<div className={cn('w-full flex justify-between', className)}>
 			<div>
-				<div className={cn('flex items-center', titleClassName)}>
-					<h3 className='mb-1 mr-3'>{title}</h3>
+				<div className='flex items-center'>
+					<h3 className={cn('mb-1 mr-3', titleClassName)}>{title}</h3>
 					{Boolean(middleContent) && middleContent}
 				</div>
 				{description && <p className='text-text-secondary'>{description}</p>}

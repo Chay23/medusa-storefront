@@ -20,7 +20,9 @@ export default function SectionRow({
 		<>
 			<div className={cn('flex my-2', className)}>
 				<div className='flex-1'>{title}</div>
-				<div className='text-foreground-500 flex-1'>{value}</div>
+				<div className='text-foreground-500 flex-1'>
+					{!!value ? value : '-'}
+				</div>
 			</div>
 			{includeDivider && <Divider />}
 		</>

@@ -1,9 +1,10 @@
 import { ReactNode } from 'react';
 
-import { Chip, ChipVariantProps } from '@heroui/react';
+import { Chip, ChipProps } from '@heroui/chip';
+import { cn } from '@heroui/theme';
 
 type Colors = {
-	[K in NonNullable<ChipVariantProps['color']>]?: string;
+	[K in NonNullable<ChipProps['color']>]?: string;
 };
 
 const colorValues: Colors = {
@@ -15,7 +16,7 @@ const colorValues: Colors = {
 	secondary: 'bg-secondary',
 };
 
-type Props = ChipVariantProps & {
+type Props = ChipProps & {
 	wrapped?: boolean;
 	children: ReactNode;
 };
@@ -30,8 +31,8 @@ export default function StatusBadge({
 		<Chip
 			variant='dot'
 			classNames={{
-				dot: colorValues[color],
-				base: `${!wrapped ? 'border-none' : ''}`,
+				dot: cn(colorValues[color], props.classNames?.dot),
+				base: cn(`${!wrapped ? 'border-none' : ''}`, props.classNames?.base),
 			}}
 			{...props}
 		>

@@ -27,6 +27,12 @@ import type { AdminProductCategoryListResponse } from '@/types/api/product-categ
 
 import StatusBadge from '../../UI/common/StatusBadge';
 import TablePagination from '../../UI/table/TablePagination';
+import {
+	STATUS_ACTIVE_LABEL,
+	STATUS_INACTIVE_LABEL,
+	VISIBILITY_INTERNAL_LABEL,
+	VISIBILITY_PUBLIC_LABEL,
+} from '../constants';
 
 type Props = {
 	categoriesRes: AdminProductCategoryListResponse;
@@ -39,9 +45,12 @@ export default function CategoriesTable({ categoriesRes }: Props) {
 	const { offset, limit, count, product_categories } = categoriesRes;
 	const page = parseInt(searchParams.get('page') || '1');
 
-	const handlePageChange = useCallback((page: number) => {
-		updateParams({ page: page.toString() });
-	}, [updateParams]);
+	const handlePageChange = useCallback(
+		(page: number) => {
+			updateParams({ page: page.toString() });
+		},
+		[updateParams]
+	);
 
 	return (
 		<>
@@ -57,8 +66,12 @@ export default function CategoriesTable({ categoriesRes }: Props) {
 				</TableHeader>
 				<TableBody emptyContent='No Results Found'>
 					{product_categories.map((category) => {
-						const status = category.is_active ? 'Active' : 'Inactive';
-						const visibility = category.is_internal ? 'Internal' : 'Public';
+						const status = category.is_active
+							? STATUS_ACTIVE_LABEL
+							: STATUS_INACTIVE_LABEL;
+						const visibility = category.is_internal
+							? VISIBILITY_INTERNAL_LABEL
+							: VISIBILITY_PUBLIC_LABEL;
 						return (
 							<TableRow
 								key={category.id}
