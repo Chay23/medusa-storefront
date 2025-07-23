@@ -1,10 +1,12 @@
 'use client';
 
-import { Button } from '@heroui/react';
-import SectionHeader from '../../UI/common/SectionHeader';
 import Link from 'next/link';
 
+import { Button } from '@heroui/button';
+
 import { paths } from '@/config/paths';
+
+import SectionHeader from '../../UI/common/sections/SectionHeader';
 
 export default function CategoriesHeader() {
 	return (
