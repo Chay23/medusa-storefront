@@ -3,18 +3,7 @@ import { ReactNode } from 'react';
 import { Chip, ChipProps } from '@heroui/chip';
 import { cn } from '@heroui/theme';
 
-type Colors = {
-	[K in NonNullable<ChipProps['color']>]?: string;
-};
-
-const colorValues: Colors = {
-	success: 'bg-success-500',
-	danger: 'bg-danger-500',
-	default: 'bg-default-500',
-	warning: 'bg-warning-500',
-	primary: 'bg-primary',
-	secondary: 'bg-secondary',
-};
+import { COLOR_MAP } from '@/lib/dashboard/constants/ui';
 
 type Props = ChipProps & {
 	wrapped?: boolean;
@@ -31,7 +20,7 @@ export default function StatusBadge({
 		<Chip
 			variant='dot'
 			classNames={{
-				dot: cn(colorValues[color], props.classNames?.dot),
+				dot: cn(COLOR_MAP[color], props.classNames?.dot),
 				base: cn(`${!wrapped ? 'border-none' : ''}`, props.classNames?.base),
 			}}
 			{...props}

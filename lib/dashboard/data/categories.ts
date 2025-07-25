@@ -1,9 +1,12 @@
 'use server';
 
+import { revalidatePath } from 'next/cache';
+
 import {
 	STATUS_ACTIVE_KEY,
 	VISIBILITY_INTERNAL_KEY,
 } from '@/components/dashboard/product-categories/constants';
+import { paths } from '@/config/paths';
 import { API_URL, LIMIT_OPTION } from '@/lib/dashboard/constants';
 import type { Api } from '@/types/api';
 import type { ActionState } from '@/types/api/actions/common';
@@ -77,4 +80,37 @@ export const createCategory = async (
 		{ method: 'POST', headers, body: JSON.stringify(rawFormData) },
 		'Category successfully created'
 	);
+};
+
+export const editCategory = async (
+	id: string,
+	_: ActionState,
+	formData: FormData
+): Promise<ActionState> => {
+	const adminURL = API_URL;
+	const rawFormData = {
+		name: formData.get('name'),
+		...(formData.get('handle') && { handle: formData.get('handle') }),
+		description: formData.get('description'),
+		is_active: formData.get('is_active') === STATUS_ACTIVE_KEY ? true : false,
+		is_internal:
+			formData.get('is_internal') === VISIBILITY_INTERNAL_KEY ? true : false,
+	};
+
+	const headers = {
+		'Content-Type': 'application/json',
+		...(await getAuthHeader()),
+	};
+
+	const actionState = await handleActionFetch(
+		`${adminURL}/admin/product-categories/${id}`,
+		{ method: 'POST', headers, body: JSON.stringify(rawFormData) },
+		'Category successfully edited'
+	);
+
+	if (actionState.success) {
+		revalidatePath(paths.dashboard.category.getHref(id));
+	}
+
+	return actionState;
 };
