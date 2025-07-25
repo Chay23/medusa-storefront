@@ -1,3 +1,4 @@
-export const ID_COLLECTION_DELETE = 'collection-delete';
-export const ID_COLLECTION_EDIT = 'collection-edit';
-export const ID_CATEGORY_CREATE = 'category-create';
+export const ID_COLLECTION_DELETE = 'ID_COLLECTION_DELETE';
+export const ID_COLLECTION_EDIT = 'ID_COLLECTION_EDIT';
+export const ID_CATEGORY_CREATE = 'ID_CATEGORY_CREATE';
+export const ID_CATEGORY_EDIT = 'ID_CATEGORY_EDIT';
