@@ -1,6 +1,15 @@
-import { DrawerProps, Drawer as DrawerWrapper } from '@heroui/react';
+import dynamic from 'next/dynamic';
+
+import { DrawerProps } from '@heroui/drawer';
 
 import { useDrawers } from '@/store/dashboard/drawers';
+
+const DrawerWrapper = dynamic(
+	() => import('@heroui/drawer').then((mod) => mod.Drawer),
+	{
+		ssr: false,
+	}
+);
 
 type Props = DrawerProps & {
 	id: string;
