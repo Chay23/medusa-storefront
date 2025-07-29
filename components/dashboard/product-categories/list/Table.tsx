@@ -104,6 +104,10 @@ export default function CategoriesTable({ categoriesRes }: Props) {
 										</DropdownTrigger>
 										<DropdownMenu aria-label='Categories actions'>
 											<DropdownItem
+												href={
+													paths.dashboard.category.getHref(category.id) +
+													'?edit=true'
+												}
 												key='edit'
 												startContent={<ModeEditOutlineOutlinedIcon />}
 											>

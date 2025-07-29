@@ -1,33 +1,29 @@
-import type { ReactNode } from 'react';
+import dynamic from 'next/dynamic';
+
+import { DrawerProps } from '@heroui/drawer';
 
 import { useDrawers } from '@/store/dashboard/drawers';
-import { Drawer as DrawerWrapper } from '@heroui/react';
 
-type Props = {
+const DrawerWrapper = dynamic(
+	() => import('@heroui/drawer').then((mod) => mod.Drawer),
+	{
+		ssr: false,
+	}
+);
+
+type Props = DrawerProps & {
 	id: string;
-	children: ReactNode;
-	onBeforeClose?: () => void;
 };
 
-export default function Drawer({ id, children, onBeforeClose }: Props) {
+export default function Drawer({ id, children, onClose, ...props }: Props) {
 	const drawer = useDrawers((state) => state.drawers[id]);
-	const onDrawerClose = useDrawers((state) => state.closeDrawer);
-
-	const handleDrawerClose = (id: string) => {
-		return () => {
-			if (onBeforeClose) {
-				onBeforeClose();
-			}
-			onDrawerClose(id);
-		};
-	};
 
 	if (!drawer) {
 		return null;
 	}
 
 	return (
-		<DrawerWrapper isOpen={drawer.isOpen} onClose={handleDrawerClose(id)}>
+		<DrawerWrapper isOpen={drawer.isOpen} onClose={onClose} {...props}>
 			{children}
 		</DrawerWrapper>
 	);
