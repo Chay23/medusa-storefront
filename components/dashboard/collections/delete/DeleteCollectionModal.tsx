@@ -1,10 +1,6 @@
-import type { AdminCollection } from '@/types/api/collections';
+import { useActionState, useEffect, useMemo } from 'react';
 
 import { useRouter } from 'next/navigation';
-import { useActionState, useEffect, useMemo } from 'react';
-import { deleteCollection } from '@/lib/dashboard/data/collections';
-import { showActionToast } from '@/lib/dashboard/utils';
-import { useModals } from '@/store/dashboard/modals';
 
 import {
 	Button,
@@ -14,10 +10,15 @@ import {
 	ModalFooter,
 	ModalHeader,
 } from '@heroui/react';
-import Modal from '../../common/modal/Modal';
 
-import { ID_COLLECTION_DELETE } from '@/lib/dashboard/constants';
 import { paths } from '@/config/paths';
+import { ID_COLLECTION_DELETE } from '@/lib/dashboard/constants';
+import { deleteCollection } from '@/lib/dashboard/data/collections';
+import { showActionToast } from '@/lib/dashboard/utils';
+import { useModals } from '@/store/dashboard/modals';
+import type { AdminCollection } from '@/types/api/collections';
+
+import Modal from '../../common/modal/Modal';
 
 type Props = {
 	collection: AdminCollection;
@@ -28,13 +29,10 @@ export default function DeleteCollectionModal({
 	collection,
 	revalidateList,
 }: Props) {
-	const onClose = useModals((state) => state.closeModal);
+	const closeDeleteModal = useModals((state) => state.closeModal);
 	const router = useRouter();
 	const boundDeleteCollection = useMemo(
-		() =>
-			deleteCollection.bind(null, {
-				id: collection.id,
-			}),
+		() => deleteCollection.bind(null, collection.id),
 		[collection.id]
 	);
 
@@ -50,12 +48,13 @@ export default function DeleteCollectionModal({
 		showActionToast(ID_COLLECTION_DELETE, actionState);
 
 		if (actionState.success) {
-			onClose(ID_COLLECTION_DELETE);
-			revalidateList
-				? router.refresh()
-				: router.push(paths.dashboard.collections.getHref());
+			closeDeleteModal(ID_COLLECTION_DELETE);
+			if (revalidateList) {
+				router.refresh();
+			}
+			router.push(paths.dashboard.collections.getHref());
 		}
-	}, [actionState]);
+	}, [actionState, closeDeleteModal, revalidateList, router]);
 
 	return (
 		<Modal id={ID_COLLECTION_DELETE}>
@@ -69,7 +68,7 @@ export default function DeleteCollectionModal({
 				</ModalBody>
 				<ModalFooter>
 					<Form action={formAction} className='flex flex-row'>
-						<Button onPress={() => onClose(ID_COLLECTION_DELETE)}>
+						<Button onPress={() => closeDeleteModal(ID_COLLECTION_DELETE)}>
 							Cancel
 						</Button>
 						<Button color='danger' type='submit' isLoading={isPending}>

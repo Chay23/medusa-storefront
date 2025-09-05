@@ -36,7 +36,7 @@ export default function EditCollectionDrawer({ collection }: Props) {
 	const closeDrawer = useDrawers((state) => state.closeDrawer);
 	const { shallowUpdateParams } = useShallowUpdateParams();
 	const boundUpdateCollection = useMemo(
-		() => updateCollection.bind(null, { id: collection.id }),
+		() => updateCollection.bind(null, collection.id),
 		[collection.id]
 	);
 

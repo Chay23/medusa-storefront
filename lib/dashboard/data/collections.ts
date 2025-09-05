@@ -25,7 +25,7 @@ export const getCollections = async (
 		page,
 		limit,
 		path: '/admin/collections',
-		queryParams,		
+		queryParams,
 	});
 };
 
@@ -94,8 +94,8 @@ export const createCollection = async (
 };
 
 export const updateCollection = async (
-	{ id }: { id: string },
-	_: any,
+	id: string,
+	_: unknown,
 	formData: FormData
 ): Promise<ActionState> => {
 	const rawFormData = {
@@ -124,7 +124,7 @@ export const updateCollection = async (
 			success: true,
 			toast: { message: 'Collection successfully edited' },
 		};
-	} catch (_) {
+	} catch {
 		return {
 			success: false,
 			toast: { message: 'Failed to edit collection' },
@@ -132,11 +132,7 @@ export const updateCollection = async (
 	}
 };
 
-export const deleteCollection = async ({
-	id,
-}: {
-	id: string;
-}): Promise<ActionState> => {
+export const deleteCollection = async (id: string): Promise<ActionState> => {
 	const headers = {
 		'Content-Type': 'application/json',
 		...(await getAuthHeader()),
@@ -156,7 +152,7 @@ export const deleteCollection = async ({
 			success: true,
 			toast: { message: 'Collection successfully deleted' },
 		};
-	} catch (_) {
+	} catch {
 		return {
 			success: false,
 			toast: { message: 'Failed to delete collection' },
