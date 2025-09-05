@@ -1,12 +1,13 @@
 'use server';
 
-import type { Api } from '@/types/api';
 import type { HttpTypes } from '@medusajs/types';
+
+import { transformQueryParams } from '@/lib/common/utils/params';
+import type { Api } from '@/types/api';
 import type { RetrieveResponse } from '@/types/common/fetch';
 
-import { getPaginatedList } from '../services/api';
 import { LIMIT_OPTION } from '../constants/api';
-import { transformQueryParams } from '@/lib/common/utils/params';
+import { getPaginatedList } from '../services/api';
 
 type AdminProductListParamsKeys = keyof HttpTypes.AdminProductListParams;
 
@@ -21,5 +22,10 @@ export const getProducts = async (
 		obj: ['created_at', 'updated_at'] as AdminProductListParamsKeys[],
 	});
 
-	return await getPaginatedList(page, limit, '/admin/products', params);
+	return await getPaginatedList({
+		page,
+		limit,
+		path: '/admin/products',
+		queryParams: params,
+	});
 };

@@ -1,12 +1,12 @@
-import type { Api } from '@/types/api';
-import type { RetrieveResponse } from '@/types/common/fetch';
-import type { PaginationFields } from '@/types/api/common';
-
-import { API_URL, FETCH_ERROR_OBJECT_1 } from '@/lib/dashboard/constants';
-import { getAuthHeader } from '../data/cookies';
 import { stringify } from 'qs';
 
+import { API_URL, FETCH_ERROR_OBJECT_1 } from '@/lib/dashboard/constants';
 import ResponseError from '@/lib/errors/ResponseError';
+import type { Api } from '@/types/api';
+import type { PaginationFields } from '@/types/api/common';
+import type { RetrieveResponse } from '@/types/common/fetch';
+
+import { getAuthHeader } from '../data/cookies';
 
 export const handleFetch = async <T>(
 	url: string,
@@ -87,12 +87,19 @@ export const getPaginationOffset = (limitParam: number, pageParam: number) => {
 	return offset;
 };
 
-export const getPaginatedList = async <T>(
-	page: number,
-	limit: number,
-	path: string,
-	queryParams?: Record<string, unknown>
-): Promise<RetrieveResponse<T>> => {
+export const getPaginatedList = async <T>({
+	page,
+	limit,
+	path,
+	queryParams,
+	next,
+}: {
+	page: number;
+	limit: number;
+	path: string;
+	queryParams?: Record<string, unknown>;
+	next?: NextFetchRequestConfig;
+}): Promise<RetrieveResponse<T>> => {
 	const offset = getPaginationOffset(limit, page);
 
 	const headers = {
@@ -107,7 +114,7 @@ export const getPaginatedList = async <T>(
 
 	const url = `${API_URL}${path}?${_queryParams}`;
 
-	return await handleFetch<T>(url, { headers });
+	return await handleFetch<T>(url, { headers, next });
 };
 
 export const getFullList = async <
@@ -118,7 +125,7 @@ export const getFullList = async <
 	path: string,
 	queryParams?: Q
 ): Promise<RetrieveResponse<T>> => {
-	let offset = 0;
+	const offset = 0;
 	const limit = 9999;
 
 	const headers = {
@@ -132,7 +139,7 @@ export const getFullList = async <
 	});
 
 	let url = `${API_URL}${path}?${_queryParams.toString()}`;
-	let res = await handleFetch<T>(url, { headers });
+	const res = await handleFetch<T>(url, { headers });
 
 	if (!res.success) {
 		return res;

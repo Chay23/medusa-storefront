@@ -1,5 +1,11 @@
 'use server';
 
+import { revalidatePath } from 'next/cache';
+
+import { z } from 'zod';
+
+import { paths } from '@/config/paths';
+import { API_URL, LIMIT_OPTION } from '@/lib/dashboard/constants';
 import type { Api } from '@/types/api';
 import type {
 	ActionState,
@@ -8,10 +14,6 @@ import type {
 import type { RetrieveResponse } from '@/types/common/fetch';
 
 import { getAuthHeader } from './cookies';
-import { API_URL, LIMIT_OPTION } from '@/lib/dashboard/constants';
-import { z } from 'zod';
-import { revalidatePath } from 'next/cache';
-import { paths } from '@/config/paths';
 import { getPaginatedList, handleFetch } from '../services/api';
 
 export const getCollections = async (
@@ -19,7 +21,12 @@ export const getCollections = async (
 	queryParams: Api.FindParams & Api.SearchParams
 ): Promise<RetrieveResponse<Api.AdminCollectionListResponse>> => {
 	const limit = queryParams?.limit || LIMIT_OPTION;
-	return await getPaginatedList(page, limit, '/admin/collections', queryParams);
+	return await getPaginatedList({
+		page,
+		limit,
+		path: '/admin/collections',
+		queryParams,		
+	});
 };
 
 export const getCollection = async (

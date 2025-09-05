@@ -27,12 +27,12 @@ export const getCategories = async (
 	queryParams?: Api.FindParams & Api.SearchParams
 ) => {
 	const limit = queryParams?.limit || LIMIT_OPTION;
-	return await getPaginatedList<Api.AdminProductCategoryListResponse>(
+	return await getPaginatedList<Api.AdminProductCategoryListResponse>({
 		page,
 		limit,
-		'/admin/product-categories',
-		queryParams
-	);
+		path: '/admin/product-categories',
+		queryParams,
+	});
 };
 
 export const getAllCategories = async (
