@@ -84,7 +84,7 @@ export default function CollectionsTable({ collectionsRes, page }: Props) {
 	return (
 		<>
 			{selectedCollection && (
-				<DeleteCollectionModal collection={selectedCollection} revalidateList />
+				<DeleteCollectionModal collection={selectedCollection} />
 			)}
 			<Table
 				aria-label='Collections table'

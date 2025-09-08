@@ -65,7 +65,7 @@ export default function EditCollectionDrawer({ collection }: Props) {
 		if (actionState.success) {
 			closeDrawer(ID_COLLECTION_EDIT);
 		}
-	}, [actionState]);
+	}, [actionState, closeDrawer]);
 
 	const handleDrawerClose = () => {
 		closeDrawer(ID_COLLECTION_EDIT);

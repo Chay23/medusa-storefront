@@ -50,11 +50,11 @@ export default function Collection({ collection, productsRes }: Props) {
 		if (showDrawer) {
 			onEditDrawerOpen(ID_COLLECTION_EDIT);
 		}
-	}, []);
+	}, [showDrawer, onEditDrawerOpen]);
 
 	return (
 		<>
-			<DeleteCollectionModal collection={collection} />
+			<DeleteCollectionModal collection={collection} redirectToList />
 			<EditCollectionDrawer collection={collection} />
 			<Breadcrumbs items={breadcrumbs} />
 			<div className='flex flex-col gap-9'>

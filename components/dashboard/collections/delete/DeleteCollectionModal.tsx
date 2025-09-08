@@ -22,12 +22,12 @@ import Modal from '../../common/modal/Modal';
 
 type Props = {
 	collection: AdminCollection;
-	revalidateList?: boolean;
+	redirectToList?: boolean;
 };
 
 export default function DeleteCollectionModal({
 	collection,
-	revalidateList,
+	redirectToList,
 }: Props) {
 	const closeDeleteModal = useModals((state) => state.closeModal);
 	const router = useRouter();
@@ -49,12 +49,11 @@ export default function DeleteCollectionModal({
 
 		if (actionState.success) {
 			closeDeleteModal(ID_COLLECTION_DELETE);
-			if (revalidateList) {
-				router.refresh();
+			if (redirectToList) {
+				router.push(paths.dashboard.collections.getHref());
 			}
-			router.push(paths.dashboard.collections.getHref());
 		}
-	}, [actionState, closeDeleteModal, revalidateList, router]);
+	}, [actionState, redirectToList, router, closeDeleteModal]);
 
 	return (
 		<Modal id={ID_COLLECTION_DELETE}>

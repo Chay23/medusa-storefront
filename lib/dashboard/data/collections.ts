@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 import { z } from 'zod';
 
@@ -14,6 +14,7 @@ import type {
 import type { RetrieveResponse } from '@/types/common/fetch';
 
 import { getAuthHeader } from './cookies';
+import { cacheTags } from '../constants/cache-tags';
 import { getPaginatedList, handleFetch } from '../services/api';
 
 export const getCollections = async (
@@ -26,6 +27,9 @@ export const getCollections = async (
 		limit,
 		path: '/admin/collections',
 		queryParams,
+		next: {
+			tags: [cacheTags.collectionList],
+		},
 	});
 };
 
@@ -76,20 +80,22 @@ export const createCollection = async (
 		body: JSON.stringify(rawFormData),
 	});
 
-	if (res.ok) {
+	if (!res.ok) {
+		const json = await res.json();
+
 		return {
-			success: true,
+			success: false,
 			errors: {},
-			toast: { message: 'Collection successfully created' },
+			toast: { message: json.message },
 		};
 	}
 
-	const json = await res.json();
+	revalidateTag(cacheTags.collectionList);
 
 	return {
-		success: false,
+		success: true,
 		errors: {},
-		toast: { message: json.message },
+		toast: { message: 'Collection successfully created' },
 	};
 };
 
@@ -120,6 +126,8 @@ export const updateCollection = async (
 		}
 
 		revalidatePath(paths.dashboard.collection.getHref(id));
+		revalidateTag(cacheTags.collectionList);
+
 		return {
 			success: true,
 			toast: { message: 'Collection successfully edited' },
@@ -147,6 +155,8 @@ export const deleteCollection = async (id: string): Promise<ActionState> => {
 		if (!res.ok) {
 			throw new Error();
 		}
+
+		revalidateTag(cacheTags.collectionList);
 
 		return {
 			success: true,

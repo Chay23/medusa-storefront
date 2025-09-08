@@ -1,17 +1,18 @@
 'use client';
 
-import type { Breadcrumb } from '@/types/common/breadcrumbs';
-
-import { createCollection } from '@/lib/dashboard/data/collections';
 import { useActionState, useEffect } from 'react';
-import { redirect } from 'next/navigation';
-import { showActionToast } from '@/lib/dashboard/utils';
 
-import { Button, Input } from '@heroui/react';
+import { redirect } from 'next/navigation';
+
 import { Form } from '@heroui/form';
-import Breadcrumbs from '../../UI/breadcrumbs/Breadcrumbs';
+import { Button, Input } from '@heroui/react';
 
 import { paths } from '@/config/paths';
+import { createCollection } from '@/lib/dashboard/data/collections';
+import { showActionToast } from '@/lib/dashboard/utils';
+import type { Breadcrumb } from '@/types/common/breadcrumbs';
+
+import Breadcrumbs from '../../UI/breadcrumbs/Breadcrumbs';
 
 const breadcrumbs: Breadcrumb[] = [
 	{
@@ -40,7 +41,7 @@ export default function CollectionCreate() {
 		if (actionState.success) {
 			redirect(paths.dashboard.collections.getHref());
 		}
-	}, [isPending]);
+	}, [isPending, actionState]);
 
 	return (
 		<>
