@@ -60,7 +60,6 @@ export const createCategory = async (
 	_: ActionState,
 	formData: FormData
 ): Promise<ActionState> => {
-	const adminURL = API_URL;
 	const rawFormData = {
 		name: formData.get('name'),
 		...(formData.get('handle') && { handle: formData.get('handle') }),
@@ -78,7 +77,7 @@ export const createCategory = async (
 	};
 
 	return await handleActionFetch(
-		`${adminURL}/admin/product-categories`,
+		`${API_URL}/admin/product-categories`,
 		{ method: 'POST', headers, body: qs.stringify(rawFormData) },
 		'Category successfully created'
 	);
@@ -89,7 +88,6 @@ export const editCategory = async (
 	_: ActionState,
 	formData: FormData
 ): Promise<ActionState> => {
-	const adminURL = API_URL;
 	const rawFormData = {
 		name: formData.get('name'),
 		...(formData.get('handle') && { handle: formData.get('handle') }),
@@ -105,7 +103,7 @@ export const editCategory = async (
 	};
 
 	const actionState = await handleActionFetch(
-		`${adminURL}/admin/product-categories/${id}`,
+		`${API_URL}/admin/product-categories/${id}`,
 		{ method: 'POST', headers, body: qs.stringify(rawFormData) },
 		'Category successfully edited'
 	);
@@ -113,6 +111,21 @@ export const editCategory = async (
 	if (actionState.success) {
 		revalidatePath(paths.dashboard.category.getHref(id));
 	}
+
+	return actionState;
+};
+
+export const deleteCategory = async (id: string): Promise<ActionState> => {
+	const headers = {
+		'Content-Type': 'application/json',
+		...(await getAuthHeader()),
+	};
+
+	const actionState = await handleActionFetch(
+		`${API_URL}/admin/product-categories/${id}`,
+		{ method: 'DELETE', headers },
+		'Category successfully deleted'
+	);
 
 	return actionState;
 };

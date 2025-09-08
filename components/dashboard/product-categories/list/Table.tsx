@@ -1,27 +1,23 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 import Link from 'next/link';
 
 import {
-	Dropdown,
-	DropdownItem,
-	DropdownMenu,
-	DropdownTrigger,
 	Table,
 	TableBody,
 	TableCell,
 	TableColumn,
 	TableHeader,
 	TableRow,
-} from '@heroui/react';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+} from '@heroui/table';
 
 import { paths } from '@/config/paths';
 import { useUpdateParams } from '@/hooks/useUpdateParams';
+import { ID_CATEGORY_DELETE } from '@/lib/dashboard/constants';
+import { useModals } from '@/store/dashboard/modals';
+import { Api } from '@/types/api';
 import type { AdminProductCategoryListResponse } from '@/types/api/product-categories';
 
 import StatusBadge from '../../UI/common/StatusBadge';
@@ -32,6 +28,8 @@ import {
 	VISIBILITY_INTERNAL_LABEL,
 	VISIBILITY_PUBLIC_LABEL,
 } from '../constants';
+import CategoriesListActions from './categories-list-actions';
+import { DeleteProductCategoryModal } from '../delete/delete-product-category.modal';
 
 type Props = {
 	categoriesRes: AdminProductCategoryListResponse;
@@ -39,9 +37,19 @@ type Props = {
 };
 
 export default function CategoriesTable({ categoriesRes, page }: Props) {
+	const [selectedCategory, setSelectedCategory] =
+		useState<null | Api.AdminProductCategory>(null);
+	const openModal = useModals((state) => state.openModal);
 	const { updateParams } = useUpdateParams();
 
 	const { offset, limit, count, product_categories } = categoriesRes;
+
+	const handleCategoryDeleteModalOpen = (
+		category: Api.AdminProductCategory
+	) => {
+		setSelectedCategory(category);
+		openModal(ID_CATEGORY_DELETE);
+	};
 
 	const handlePageChange = useCallback(
 		(page: number) => {
@@ -52,6 +60,9 @@ export default function CategoriesTable({ categoriesRes, page }: Props) {
 
 	return (
 		<>
+			{selectedCategory && (
+				<DeleteProductCategoryModal category={selectedCategory} />
+			)}
 			<Table aria-label='Collections table' removeWrapper>
 				<TableHeader>
 					<TableColumn>Title</TableColumn>
@@ -94,31 +105,10 @@ export default function CategoriesTable({ categoriesRes, page }: Props) {
 									</StatusBadge>
 								</TableCell>
 								<TableCell>
-									<Dropdown>
-										<DropdownTrigger>
-											<div className='self-center cursor-pointer'>
-												<MoreHorizIcon />
-											</div>
-										</DropdownTrigger>
-										<DropdownMenu aria-label='Categories actions'>
-											<DropdownItem
-												href={
-													paths.dashboard.category.getHref(category.id) +
-													'?edit=true'
-												}
-												key='edit'
-												startContent={<ModeEditOutlineOutlinedIcon />}
-											>
-												Edit
-											</DropdownItem>
-											<DropdownItem
-												key='delete'
-												startContent={<DeleteOutlineOutlinedIcon />}
-											>
-												Delete
-											</DropdownItem>
-										</DropdownMenu>
-									</Dropdown>
+									<CategoriesListActions
+										category={category}
+										onDeleteModalOpen={handleCategoryDeleteModalOpen}
+									/>
 								</TableCell>
 							</TableRow>
 						);

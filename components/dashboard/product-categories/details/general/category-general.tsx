@@ -5,7 +5,7 @@ import { Divider } from '@heroui/divider';
 import SectionRow from '@/components/dashboard/UI/common/sections/SectionRow';
 import type { Api } from '@/types/api';
 
-import CategoryActions from './CategoryActions';
+import CategoryActions from './category-actions';
 import SectionHeader from '../../../UI/common/sections/SectionHeader';
 import StatusBadge from '../../../UI/common/StatusBadge';
 import {
@@ -14,6 +14,7 @@ import {
 	VISIBILITY_INTERNAL_LABEL,
 	VISIBILITY_PUBLIC_LABEL,
 } from '../../constants';
+import { DeleteProductCategoryModal } from '../../delete/delete-product-category.modal';
 
 type Props = {
 	category: Api.AdminProductCategory;
@@ -21,21 +22,24 @@ type Props = {
 
 export default function CategoryGeneralSection({ category }: Props) {
 	return (
-		<section className='content-container'>
-			<SectionHeader
-				className='mb-2'
-				title={category.name}
-				middleContent={<CategoryChips category={category} />}
-				endContent={<CategoryActions />}
-			/>
-			<Divider />
-			<SectionRow
-				title='Description'
-				value={category.description}
-				includeDivider
-			/>
-			<SectionRow title='Handle' value={category.handle} />
-		</section>
+		<>
+			<DeleteProductCategoryModal category={category} redirectToList />
+			<section className='content-container'>
+				<SectionHeader
+					className='mb-2'
+					title={category.name}
+					middleContent={<CategoryChips category={category} />}
+					endContent={<CategoryActions />}
+				/>
+				<Divider />
+				<SectionRow
+					title='Description'
+					value={category.description}
+					includeDivider
+				/>
+				<SectionRow title='Handle' value={category.handle} />
+			</section>
+		</>
 	);
 }
 

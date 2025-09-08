@@ -1,7 +1,7 @@
 import { getCategory } from '@/lib/dashboard/data/categories';
 
 import CategoryBreadcrumbs from './CategoryBreadcrumbs';
-import CategoryGeneral from './general/CategoryGeneral';
+import CategoryGeneral from './general/category-general';
 import Error from '../../UI/error/Error';
 import CategoryEditDrawer from '../edit/CategoryEditDrawer';
 
