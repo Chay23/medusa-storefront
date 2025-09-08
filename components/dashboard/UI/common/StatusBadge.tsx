@@ -3,11 +3,12 @@ import { ReactNode } from 'react';
 import { Chip, ChipProps } from '@heroui/chip';
 import { cn } from '@heroui/theme';
 
-import { COLOR_MAP } from '@/lib/dashboard/constants/ui';
+import { ChipColors, COLOR_MAP } from '@/lib/dashboard/constants/ui';
 
 type Props = ChipProps & {
 	wrapped?: boolean;
 	children: ReactNode;
+	color?: ChipColors;
 };
 
 export default function StatusBadge({

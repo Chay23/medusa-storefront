@@ -8,3 +8,5 @@ export const COLOR_MAP: UI.ColorMap = {
 	primary: 'bg-primary',
 	secondary: 'bg-secondary',
 };
+
+export type ChipColors = keyof typeof COLOR_MAP;
