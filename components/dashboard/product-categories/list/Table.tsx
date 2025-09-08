@@ -3,7 +3,6 @@
 import { useCallback } from 'react';
 
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
 
 import {
 	Dropdown,
@@ -36,14 +35,13 @@ import {
 
 type Props = {
 	categoriesRes: AdminProductCategoryListResponse;
+	page: number;
 };
 
-export default function CategoriesTable({ categoriesRes }: Props) {
-	const searchParams = useSearchParams();
+export default function CategoriesTable({ categoriesRes, page }: Props) {
 	const { updateParams } = useUpdateParams();
 
 	const { offset, limit, count, product_categories } = categoriesRes;
-	const page = parseInt(searchParams.get('page') || '1');
 
 	const handlePageChange = useCallback(
 		(page: number) => {

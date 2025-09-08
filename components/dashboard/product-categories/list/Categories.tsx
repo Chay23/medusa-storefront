@@ -1,19 +1,19 @@
+import { getCategories } from '@/lib/dashboard/data/categories';
 import type { Api } from '@/types/api';
 
-import CategoriesTable from './Table';
 import CategoriesFilters from './Filters';
+import CategoriesTable from './Table';
 import Error from '../../UI/error/Error';
 
-import { getCategories } from '@/lib/dashboard/data/categories';
-
 type Props = {
-	page: number;
-	searchQueries: Api.AdminProductCategoryListParams;
+	searchParams: { [key: string]: string | undefined };
 };
 
-export default async function Categories({ page, searchQueries }: Props) {
-	const { q } = searchQueries;
-	const categoriesRes = await getCategories(page, {
+export default async function Categories({ searchParams }: Props) {
+	const { q, page } = searchParams;
+	const _page = parseInt(page || '1');
+
+	const categoriesRes = await getCategories(_page, {
 		q: q || '',
 	});
 
@@ -23,7 +23,7 @@ export default async function Categories({ page, searchQueries }: Props) {
 	return (
 		<>
 			<CategoriesFilters />
-			<CategoriesTable categoriesRes={categoriesRes.data} />
+			<CategoriesTable categoriesRes={categoriesRes.data} page={_page} />
 		</>
 	);
 }
