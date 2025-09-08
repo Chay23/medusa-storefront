@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+
 import { heroui } from '@heroui/react';
 
 export default {
@@ -7,6 +8,14 @@ export default {
 		'./components/**/*.{js,ts,jsx,tsx,mdx}',
 		'./app/**/*.{js,ts,jsx,tsx,mdx}',
 		'./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}',
+	],
+	safelist: [
+		'bg-success-500',
+		'bg-danger-500',
+		'bg-default-500',
+		'bg-warning-500',
+		'bg-primary',
+		'bg-secondary',
 	],
 	theme: {
 		extend: {
