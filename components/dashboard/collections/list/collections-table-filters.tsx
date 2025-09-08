@@ -1,14 +1,17 @@
-import DateFilter from '../../common/filters/DateFilter';
-import SearchFilter from '../../common/filters/SearchFilter';
+'use client';
+
+import { Filter as FilterIcon } from 'lucide-react';
+
 import { DAY_OPTIONS_1 } from '@/lib/dashboard/constants';
 
-import { Filter } from 'lucide-react';
+import DateFilter from '../../common/filters/DateFilter';
+import SearchFilter from '../../common/filters/SearchFilter';
 
-export default function CollectionsFilters({}) {
+export default function CollectionTableFilters({}) {
 	return (
 		<div className='flex gap-4 justify-between items-center mb-3'>
 			<div className='flex gap-3 items-center'>
-				<Filter />
+				<FilterIcon />
 				<DateFilter
 					title='Created'
 					paramName='created_at'

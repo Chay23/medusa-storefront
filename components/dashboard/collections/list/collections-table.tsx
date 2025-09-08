@@ -1,13 +1,10 @@
 'use client';
 
-import type { Api } from '@/types/api';
-import type { AdminCollection } from '@/types/api/collections';
+import { useState } from 'react';
 
-import ResultsCount from '../../UI/table/ResultsCount';
 import Link from 'next/link';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import { useSearchParams } from 'next/navigation';
+
 import {
 	Dropdown,
 	DropdownItem,
@@ -22,23 +19,32 @@ import {
 	TableHeader,
 	TableRow,
 } from '@heroui/react';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
-import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
-import { getListDateString } from '@/lib/dashboard/utils/date';
-import { useUpdateParams } from '@/hooks/useUpdateParams';
 import { paths } from '@/config/paths';
+import { useUpdateParams } from '@/hooks/useUpdateParams';
+import { ID_COLLECTION_DELETE } from '@/lib/dashboard/constants';
+import { getListDateString } from '@/lib/dashboard/utils/date';
+import { useModals } from '@/store/dashboard/modals';
+import type { Api } from '@/types/api';
+import type { AdminCollection } from '@/types/api/collections';
+
+import ResultsCount from '../../UI/table/ResultsCount';
+import DeleteCollectionModal from '../delete/DeleteCollectionModal';
 
 type Props = {
 	collectionsRes: Api.AdminCollectionListResponse;
-	onDeleteModalOpen: (collection: AdminCollection) => void;
+	page: number;
 };
 
-export default function CollectionsTable({
-	collectionsRes,
-	onDeleteModalOpen,
-}: Props) {
+export default function CollectionsTable({ collectionsRes, page }: Props) {
 	const searchParams = useSearchParams();
+
+	const onOpenDeleteModal = useModals((state) => state.openModal);
+	const [selectedCollection, setSelectedCollection] =
+		useState<AdminCollection | null>(null);
 
 	const getSortOrder = () => {
 		const order = searchParams.get('order');
@@ -55,7 +61,11 @@ export default function CollectionsTable({
 	});
 
 	const { offset, limit, count, collections } = collectionsRes;
-	const page = parseInt(searchParams.get('page') || '1');
+
+	const onDeleteModalOpen = (collection: AdminCollection) => {
+		onOpenDeleteModal(ID_COLLECTION_DELETE);
+		setSelectedCollection(collection);
+	};
 
 	const handlePageChange = (page: number) => {
 		updateParams({ page: page.toString() });
@@ -73,6 +83,9 @@ export default function CollectionsTable({
 
 	return (
 		<>
+			{selectedCollection && (
+				<DeleteCollectionModal collection={selectedCollection} revalidateList />
+			)}
 			<Table
 				aria-label='Collections table'
 				removeWrapper

@@ -1,37 +1,34 @@
-import Collections from '@/components/dashboard/collections/list/Collections';
-import Error from '@/components/dashboard/UI/error/Error';
-import { getCollections } from '@/lib/dashboard/data/collections';
+import { Suspense } from 'react';
+
+import Collections from '@/components/dashboard/collections/list/collections';
+import CollectionsBreadcrumbs from '@/components/dashboard/collections/list/collections-breadcrumbs';
+import CollectionsHeader from '@/components/dashboard/collections/list/collections-header';
+import CollectionsFilters from '@/components/dashboard/collections/list/collections-table-filters';
+import { DataTableControlsSkeleton } from '@/components/dashboard/UI/loading/data-table-controls.skeleton';
+import TableSkeleton from '@/components/dashboard/UI/loading/table.skeleton';
 
 type Props = {
 	searchParams: Promise<{ [key: string]: string | undefined }>;
 };
 
 export default async function Page({ searchParams }: Props) {
-	const {
-		page,
-		q,
-		order,
-		'created_at[$gte]': createdGte,
-		'created_at[$lte]': createdLte,
-		'updated_at[$gte]': updatedGte,
-		'updated_at[$lte]': updatedLte,
-	} = await searchParams;
-
-	const _page = parseInt(page || '1');
-
-	const collectionsRes = await getCollections(_page, {
-		q: q || '',
-		...(order && { order }),
-		...(createdGte && { 'created_at[$gte]': createdGte }),
-		...(createdLte && { 'created_at[$lte]': createdLte }),
-		...(updatedGte && { 'created_at[$gte]': updatedGte }),
-		...(updatedLte && { 'created_at[$lte]': updatedLte }),
-		limit: 12,
-	});
-
-	if (!collectionsRes.success) {
-		return <Error error={collectionsRes.error} />;
-	}
-
-	return <Collections collectionsRes={collectionsRes.data} />;
+	return (
+		<>
+			<CollectionsBreadcrumbs />
+			<section className='content-container'>
+				<CollectionsHeader />
+				<Suspense
+					fallback={
+						<>
+							<DataTableControlsSkeleton />
+							<TableSkeleton />
+						</>
+					}
+				>
+					<CollectionsFilters />
+					<Collections searchParams={await searchParams} />
+				</Suspense>
+			</section>
+		</>
+	);
 }
