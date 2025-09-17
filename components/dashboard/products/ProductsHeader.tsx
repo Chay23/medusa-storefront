@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@heroui/button';
-import SectionHeader from '../UI/common/SectionHeader';
+import SectionHeader from '../UI/common/sections/SectionHeader';
 
 export default function ProductsHeader() {
 	return (
