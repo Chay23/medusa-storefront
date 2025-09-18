@@ -27,5 +27,8 @@ export const paths = {
 		products: {
 			getHref: () => '/dashboard/products',
 		},
+		createProduct: {
+			getHref: () => '/dashboard/products/create',
+		},
 	},
 };

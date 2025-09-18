@@ -1,6 +1,11 @@
 'use client';
 
+import Link from 'next/link';
+
 import { Button } from '@heroui/button';
+
+import { paths } from '@/config/paths';
+
 import SectionHeader from '../UI/common/sections/SectionHeader';
 
 export default function ProductsHeader() {
@@ -11,7 +16,13 @@ export default function ProductsHeader() {
 			description='Manage your products'
 			endContent={
 				<div>
-					<Button color='primary'>Add Product</Button>
+					<Button
+						as={Link}
+						href={paths.dashboard.createProduct.getHref()}
+						color='primary'
+					>
+						Add Product
+					</Button>
 				</div>
 			}
 		/>
