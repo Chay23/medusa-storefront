@@ -1,19 +1,17 @@
-import { memo } from 'react';
+import { Key, memo, RefCallback, RefObject } from 'react';
 
 import { Textarea, TextAreaProps } from '@heroui/input';
-import {
-	Controller,
-	ControllerProps,
-	ControllerRenderProps,
-	FieldValues,
-} from 'react-hook-form';
+import { Controller, ControllerProps, FieldValues } from 'react-hook-form';
 
 import type { MakeRequired, Prettify } from '@/types/utils/common';
 
 type Props<T extends FieldValues> = Prettify<
-	MakeRequired<Omit<ControllerProps<T>, 'render'>, 'control'>
-> &
-	Omit<TextAreaProps, keyof ControllerRenderProps | 'isInvalid'>;
+	MakeRequired<Omit<ControllerProps<T>, 'render'>, 'control'> &
+		Omit<TextAreaProps, 'isInvalid' | 'disabled'> & {
+			controllerKey?: Key | null;
+			ref?: RefObject<HTMLTextAreaElement> | RefCallback<HTMLTextAreaElement>;
+		}
+>;
 
 function ControlledTextarea<T extends FieldValues>({
 	control,
@@ -21,15 +19,25 @@ function ControlledTextarea<T extends FieldValues>({
 	label,
 	labelPlacement,
 	className,
+	controllerKey,
+	defaultValue,
+	disabled,
+	shouldUnregister,
+	rules,
+	ref,
 	...props
 }: Props<T>) {
 	return (
 		<Controller
+			key={controllerKey}
 			control={control}
 			name={name}
-			{...props}
+			defaultValue={defaultValue}
+			disabled={disabled}
+			rules={rules}
+			shouldUnregister={shouldUnregister}
 			render={({
-				field: { name, value, onChange, disabled, ref },
+				field: { name, value, onChange, disabled },
 				fieldState: { invalid, error },
 			}) => (
 				<Textarea

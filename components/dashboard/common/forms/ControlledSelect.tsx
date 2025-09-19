@@ -1,12 +1,7 @@
-import { memo } from 'react';
+import { Key, memo, RefCallback, RefObject } from 'react';
 
 import { Select, SelectItem, SelectProps } from '@heroui/select';
-import {
-	Controller,
-	ControllerProps,
-	ControllerRenderProps,
-	FieldValues,
-} from 'react-hook-form';
+import { Controller, ControllerProps, FieldValues } from 'react-hook-form';
 
 import type { UI } from '@/types/ui';
 import type {
@@ -16,14 +11,16 @@ import type {
 } from '@/types/utils/common';
 
 type Props<T extends FieldValues> = Prettify<
-	MakeRequired<Omit<ControllerProps<T>, 'render'>, 'control'>
-> &
-	MakeOptional<
-		Omit<SelectProps, keyof ControllerRenderProps | 'isInvalid' | 'items'>,
-		'children'
-	> & {
-		options: UI.SelectOption[];
-	};
+	MakeRequired<Omit<ControllerProps<T>, 'render'>, 'control'> &
+		MakeOptional<
+			Omit<SelectProps, 'isInvalid' | 'items' | 'disabled'>,
+			'children'
+		> & {
+			options: UI.SelectOption[];
+			controllerKey?: Key | null;
+			ref?: RefObject<HTMLSelectElement> | RefCallback<HTMLSelectElement>;
+		}
+>;
 function ControlledSelect<T extends FieldValues>({
 	control,
 	label,
@@ -32,15 +29,25 @@ function ControlledSelect<T extends FieldValues>({
 	name,
 	className,
 	children,
+	controllerKey,
+	defaultValue,
+	disabled,
+	shouldUnregister,
+	rules,
+	ref,
 	...props
 }: Props<T>) {
 	return (
 		<Controller
+			key={controllerKey}
 			control={control}
 			name={name}
-			{...props}
+			defaultValue={defaultValue}
+			disabled={disabled}
+			rules={rules}
+			shouldUnregister={shouldUnregister}
 			render={({
-				field: { name, value, onChange, disabled, ref },
+				field: { name, value, onChange, disabled },
 				fieldState: { invalid, error },
 			}) => {
 				return (
