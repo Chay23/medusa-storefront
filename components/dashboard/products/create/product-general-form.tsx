@@ -1,16 +1,22 @@
 'use client';
 
-import { Control } from 'react-hook-form';
+import Link from 'next/link';
+
+import { Button } from '@heroui/react';
+import { useFormContext } from 'react-hook-form';
+
+import { paths } from '@/config/paths';
 
 import ControlledInput from '../../common/forms/ControlledInput';
 import ControlledTextarea from '../../common/forms/ControlledTextarea';
-import { CreateProductInputs } from '../types';
+import { PRODUCT_TAB_2_KEY } from '../constants';
 
 type Props = {
-	control: Control<CreateProductInputs>;
+	onTabChange: (key: string | number) => void;
 };
 
-export default function ProductGeneralForm({ control }: Props) {
+export default function ProductGeneralForm({ onTabChange }: Props) {
+	const { control } = useFormContext();
 	return (
 		<div className='flex flex-col gap-6'>
 			<div className='w-full flex justify-between'>
@@ -27,7 +33,7 @@ export default function ProductGeneralForm({ control }: Props) {
 					control={control}
 					rules={{
 						validate: (value) => (value as string)?.trim() !== '',
-						required: 'Name can not be empty',
+						required: 'Title can not be empty',
 					}}
 					label='Title'
 					placeholder='Gym t-shirt'
@@ -35,23 +41,15 @@ export default function ProductGeneralForm({ control }: Props) {
 				<ControlledInput
 					name='subtitle'
 					control={control}
-					rules={{
-						validate: (value) => (value as string)?.trim() !== '',
-						required: 'Name can not be empty',
-					}}
 					label='Subtitle'
 					placeholder='Sturdy and ...'
 				/>
 				<ControlledInput
 					name='handle'
 					control={control}
-					rules={{
-						validate: (value) => (value as string)?.trim() !== '',
-						required: 'Name can not be empty',
-					}}
 					label={
 						<span>
-							Handle{' '}
+							Handle&nbsp;
 							<span className='text-xs text-text-secondary'>
 								(auto-generated)
 							</span>
@@ -63,13 +61,17 @@ export default function ProductGeneralForm({ control }: Props) {
 			<ControlledTextarea
 				name='description'
 				control={control}
-				rules={{
-					validate: (value) => (value as string)?.trim() !== '',
-					required: 'Name can not be empty',
-				}}
 				label='Description'
 				placeholder='The best gym t-shirt...'
 			/>
+			<div className='flex justify-end gap-2'>
+				<Button as={Link} href={paths.dashboard.products.getHref()}>
+					Cancel
+				</Button>
+				<Button color='primary' onPress={() => onTabChange(PRODUCT_TAB_2_KEY)}>
+					Continue
+				</Button>
+			</div>
 		</div>
 	);
 }
