@@ -22,6 +22,7 @@ export default {
 			colors: {
 				background: 'var(--background)',
 				surface: 'var(--surface)',
+				'surface-secondary': 'var(--surface-secondary)',
 				loading: 'var(--loading)',
 				primary: 'var(--primary)',
 				secondary: 'var(--secondary)',
